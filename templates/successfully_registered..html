@@ -8,9 +8,11 @@
     <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
     <title>تسجيل ناجح</title>
 </head>
-<body>
+<body style="text-align: center;">
     <h1>تم تسجيلك بنجاح</h1>
     <img src="{% static 'index/files/syr.png' %}" style="width: 50%; max-width: 300px;">
-    <p>شكراً لتسجيلك، {{ name }}. تم إرسال تأكيد إلى بريدك الإلكتروني: {{ email }}.</p>
+    <p>شكراً لتسجيلك، {{ name }}</p>
+    <p>تم إرسال تأكيد إلى بريدك الإلكتروني</p>
+    <p>{{ email }}</p>
 </body>
 </html>
