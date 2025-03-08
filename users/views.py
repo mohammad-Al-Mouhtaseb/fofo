@@ -8,7 +8,7 @@ from . models import *
 import base64
 from django.core.files.base import ContentFile
 import requests
-from .forms import reg_form
+from .forms import reg_form, log_form
 from cryptography.hazmat.primitives import asymmetric, serialization
 # from setting_apps.models import *
 
@@ -55,7 +55,7 @@ def register_form(request):
                     p.token= ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
                     p.save()
                     send_mail(email,p.token)
-                    return JsonResponse({'state':'success'}, status=200) 
+                    return render(request, 'successfully_registered..html', {'email': email,'name': form.cleaned_data['name']})
                 except Exception as e:
                     print(e)
                     return JsonResponse({'state':'Email already exists','Exception':str(e)}, status=201)
@@ -63,7 +63,7 @@ def register_form(request):
             return JsonResponse({'state':'not success'}, status=200) 
     else:
         form = reg_form()
-    return render(request, 'user_form.html', {'form': form})
+    return render(request, 'register_form.html', {'form': form})
 
 
 @csrf_exempt 
@@ -88,6 +88,31 @@ def login(request):
         except Exception as e:
             return JsonResponse({'state':'Email not found','Exception':str(e),'email':email}, status=201)
     return JsonResponse({'state':'error request method'}, status=201)
+
+@csrf_exempt 
+def login_form(request):
+    if request.method == 'POST':
+        form = reg_form(request.POST)
+        if form.is_valid():
+            email=form.cleaned_data['email']
+            password=form.cleaned_data['password']
+            try:             
+                user=User.objects.get(email=email)
+                if user.is_active==True and user.password==password:
+                    Json_res=User.objects.get(email=email)
+                    Json_res.token= ''.join(random.choices(string.ascii_uppercase + string.digits, k=20))
+                    Json_res.save()
+                    res=User.objects.filter(email=email).values()[0]
+                    return JsonResponse({'state':{"email":res['email'],"name":res['name'],"father_name":res['father_name'],"mother_name":res['mother_name'],"email":res['email'],"phone_number":res['phone_number'],"gender":res['gender'],"birth":res['birth'],"photo":res['photo'],"token":res['token']}}, status=200)
+                return JsonResponse({'state':'user not active or password incorrect'}, status=200) 
+            except Exception as e:
+                print(e)
+                return JsonResponse({'state':'Email not exist','Exception':str(e)}, status=201)
+        else:
+            return JsonResponse({'state':'not success'}, status=200) 
+    else:
+        form = reg_form()
+    return render(request, 'login_form.html', {'form': form})
 
 @csrf_exempt 
 def logout(request):

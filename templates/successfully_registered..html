@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'index/files/syr.png' %}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
+    <title>تسجيل ناجح</title>
+</head>
+<body>
+    <h1>تم تسجيلك بنجاح</h1>
+    <img src="{% static 'index/files/syr.png' %}" style="width: 50%; max-width: 300px;">
+    <p>شكراً لتسجيلك، {{ name }}. تم إرسال تأكيد إلى بريدك الإلكتروني: {{ email }}.</p>
+</body>
+</html>

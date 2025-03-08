@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'index/files/syr.png' %}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
     <title>طلب الترشح لانتخابات مجلس الشعب السوري</title>
     <style>
         body {
@@ -65,8 +67,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>طلب الترشح لانتخابات مجلس الشعب السوري</h1>
-        <form method="post" enctype="multipart/form-data">
+        <h1>تسجيل الدخول</h1>
+        <form method="post">
             <input type="hidden" name="csrfmiddlewaretoken" value="rTMOorc177bcebSHoggaqPJNYVBJDtbWZx0iwzoT9q5E5PhQWJo4wULlo2FwCaXI">
 
             <label>البريد الإلكتروني</label>
@@ -75,43 +77,7 @@
             <label>كلمة المرور</label>
             <input type="password" name="password" required>
 
-            <label>الاسم الكامل</label>
-            <input type="text" name="name" required>
-
-            <label>اسم الأب</label>
-            <input type="text" name="father_name" required>
-
-            <label>اسم الأم</label>
-            <input type="text" name="mother_name" required>
-
-            <label>الجنس</label>
-            <select name="gender">
-                <option value="m" selected>ذكر</option>
-                <option value="f">أنثى</option>
-            </select>
-
-            <label>تاريخ الميلاد</label>
-            <input type="date" name="birth" required>
-
-            <label>الصورة الشخصية</label>
-            <input type="file" name="photo" accept="image/*" required>
-
-            <label>وثيقة غير محكوم</label>
-            <input type="file" name="no_judgment" accept="image/*" required>
-
-            <label>صورة الهوية (الوجه الأمامي)</label>
-            <input type="file" name="id_image_front" accept="image/*" required>
-
-            <label>صورة الهوية (الوجه الخلفي)</label>
-            <input type="file" name="id_image_back" accept="image/*" required>
-
-            <label>سند اقامة</label>
-            <input type="file" name="residence_permit" accept="image/*" required>
-
-            <label>رقم الهاتف</label>
-            <input type="tel" name="phone_number" required>
-
-            <button type="submit" class="submit-btn">تقديم الطلب</button>
+            <button type="submit" class="submit-btn">تسجيل الدخول</button>
         </form>
     </div>
 </body>

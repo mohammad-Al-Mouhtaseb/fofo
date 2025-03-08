@@ -21,3 +21,12 @@ class reg_form(forms.ModelForm):
             'residence_permit': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_residence_permit'}),
             'phone_number': forms.TextInput(attrs={'maxlength': '15', 'required': True, 'id': 'id_phone_number'}),
         }
+
+class log_form(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['password','email']
+        widgets = {
+            'password': forms.TextInput(attrs={'maxlength': '128', 'required': True, 'id': 'id_password'}),
+            'email': forms.EmailInput(attrs={'maxlength': '254', 'required': True, 'id': 'id_email'})
+        }

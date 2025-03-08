@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'index/files/syr.png' %}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
+    <title>طلب الترشح لانتخابات مجلس الشعب السوري</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            max-width: 600px;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        label {
+            font-weight: bold;
+            text-align: right;
+            margin-top: 10px;
+            display: block;
+        }
+        input, select {
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            width: 80%;
+        }
+        select{
+            width: 85%;
+        }
+        input[type="file"] {
+            padding: 5px;
+            background: #f9f9f9;
+        }
+        .submit-btn {
+            margin-top: 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>طلب الترشح لانتخابات مجلس الشعب السوري</h1>
+        <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="csrfmiddlewaretoken" value="rTMOorc177bcebSHoggaqPJNYVBJDtbWZx0iwzoT9q5E5PhQWJo4wULlo2FwCaXI">
+
+            <label>البريد الإلكتروني</label>
+            <input type="email" name="email" required>
+
+            <label>كلمة المرور</label>
+            <input type="password" name="password" required>
+
+            <label>الاسم الكامل</label>
+            <input type="text" name="name" required>
+
+            <label>اسم الأب</label>
+            <input type="text" name="father_name" required>
+
+            <label>اسم الأم</label>
+            <input type="text" name="mother_name" required>
+
+            <label>الجنس</label>
+            <select name="gender">
+                <option value="m" selected>ذكر</option>
+                <option value="f">أنثى</option>
+            </select>
+
+            <label>تاريخ الميلاد</label>
+            <input type="date" name="birth" required>
+
+            <label>الصورة الشخصية</label>
+            <input type="file" name="photo" accept="image/*" required>
+
+            <label>وثيقة غير محكوم</label>
+            <input type="file" name="no_judgment" accept="image/*" required>
+
+            <label>صورة الهوية (الوجه الأمامي)</label>
+            <input type="file" name="id_image_front" accept="image/*" required>
+
+            <label>صورة الهوية (الوجه الخلفي)</label>
+            <input type="file" name="id_image_back" accept="image/*" required>
+
+            <label>سند اقامة</label>
+            <input type="file" name="residence_permit" accept="image/*" required>
+
+            <label>رقم الهاتف</label>
+            <input type="tel" name="phone_number" required>
+
+            <button type="submit" class="submit-btn">تقديم الطلب</button>
+        </form>
+    </div>
+</body>
+</html>
