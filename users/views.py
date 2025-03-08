@@ -14,6 +14,9 @@ from cryptography.hazmat.primitives import asymmetric, serialization
 
 # Create your views here.
 
+def index(request):
+    return render(request,'index.html')
+
 @csrf_exempt
 def register(request):
     if request.method == 'POST':
@@ -309,7 +312,7 @@ def send_mail(sendto,token):
                         <p>.نود أن نلفت انتباهكم إلى ضرورة الالتزام بكافة القوانين والأنظمة الانتخابية المعمول بها، ونتمنى لكم التوفيق والنجاح في مساعيكم لتحقيق أهدافكم وخدمة الشعب السوري</p>
                         <p>.يرجى منكم التواصل مع مكتبنا في حال وجود أي استفسارات أو طلبات إضافية</p>
                         <p>يجب توثيق حسابك من خلال الضغط 
-                        <a href='https://parliament.up.railway.app/users/auth/'''+sendto+"/"+token+''''> 
+                        <a href='https://parliament.up.railway.app/auth/'''+sendto+"/"+token+''''> 
                         هنا</a></p>
                         <table>
                             <th><p>،مع أطيب التحيات</p><p>مجلس الشعب السوري</p></th>
