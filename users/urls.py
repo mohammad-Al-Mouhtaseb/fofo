@@ -4,6 +4,7 @@ from . import photos
 
 urlpatterns = [
     # path('register',views.register,name='register'),
+    path('',views.index,name='index'),
     path('register_form',views.register_form,name='register_form'),
     path('login',views.login,name='login'),
     path('login_form',views.login_form,name='login_form'),
