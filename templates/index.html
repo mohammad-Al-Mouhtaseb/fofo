@@ -1,25 +1,168 @@
 <!DOCTYPE html>
-<html lang="ar">
-
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مجلس الشعب السوري</title>
-    </script>
-</head>
+    <style>
+        :root {
+            --primary-color: #7b181b;
+            --secondary-color: #E3E3E3;
+            --text-color: #2c3e50;
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('../images/header-bg.jpg') center/cover;
+            height: 200px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .logo {
+            float: right;
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: var(--primary-color);
+            padding: 1rem;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 2rem;
+            background: var(--secondary-color);
+            text-align: center;
+        }
+
+        .search-input {
+            width: 60%;
+            padding: 0.8rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+
+        /* Legislation Grid */
+        .legislation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .legislation-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s;
+        }
+
+        .legislation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-list {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .search-input {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
 <body>
-    <header>
-        <h1>اهلا</h1>
-        <nav>
-            <ul>
-                <li><a href="https://parliament.up.railway.app/register_form">تسحيل</a></li>
-                <li><a href="https://parliament.up.railway.app/login_form">دحول</a></li>
-            </ul>
+
+<header class="header">
+    <img src="/EG8/logo.png" alt="شعار مجلس الشعب السوري" class="logo">
+</header>
+
+<nav class="main-nav">
+    <ul class="nav-list">
+        <li class="nav-item">الرئيسية</li>
+        <li class="nav-item">عن المجلس</li>
+        <li class="nav-item">التشريعات</li>
+        <li class="nav-item">الأعضاء</li>
+        <li class="nav-item">الاتصال</li>
+    </ul>
+</nav>
+
+<section class="search-section">
+    <h2>بحث سريع في التشريعات</h2>
+    <input type="text" class="search-input" placeholder="أدخل كلمة مفتاحية...">
+    <button class="search-btn">بحث</button>
+</section>
+
+<main class="legislation-grid">
+    <article class="legislation-card">
+        <h3>المرسوم التشريعي رقم 21</h3>
+        <p>تعديل المادة 35 من قانون العمل</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
+
+    <article class="legislation-card">
+        <h3>قانون الجامعات</h3>
+        <p>إنشاء جامعة النموذج للدراسات المتخصصة</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
+
+    <article class="legislation-card">
+        <h3>نظام الانتخابات</h3>
+        <p>التعديلات الجديدة على قانون الانتخابات البرلمانية</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
+</main>
+
+<section class="members-section">
+    <h2>أعضاء المجلس</h2>
+    <div class="members-grid">
+        <!-- Member cards would go here -->
+    </div>
+</section>
+
+<footer>
+    <div class="footer-content">
+        <p>جميع الحقوق محفوظة © مجلس الشعب السوري 2024</p>
+        <nav class="footer-nav">
+            <a href="#">سياسة الخصوصية</a>
+            <a href="#">شروط الاستخدام</a>
+            <a href="#">خريطة الموقع</a>
         </nav>
-    </header>
-    <footer>
-        
-    </footer>
+    </div>
+</footer>
+
 </body>
 </html>

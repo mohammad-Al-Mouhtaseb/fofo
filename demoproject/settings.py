@@ -46,15 +46,15 @@ INSTALLED_APPS = [
 ]
 
 JAZZMIN_SETTINGS = {
-    "site_title": "مجلس الشعب",
-    "site_header": "مجلس الشعب",
-    "site_brand": "مجلس الشعب",
+    "site_title": "مجلس الشعب السوري",
+    "site_header": "مجلس الشعب السوري",
+    "site_brand": "مجلس الشعب السوري",
     "site_icon": "./index/files/syr-small.png",
     # Add your own branding here
     "site_logo": "./index/files/syr-small.png",
     "welcome_sign": "",
     # Copyright on the footer
-    "copyright": "مجلس الشعب",
+    "copyright": "مجلس الشعب السوري",
     "user_avatar": None,
     ############
     # Top Menu #
@@ -66,7 +66,6 @@ JAZZMIN_SETTINGS = {
         # model admin to link to (Permissions checked against model)
         {"model": "auth.User"},
         {"name": "Support", "url": "mailto://m.almouhtaseb@gmail.com", "new_window": True},
-
     ],
     "usermenu_links": [
         {"model": "auth.user"}
@@ -187,7 +186,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "demoproject.wsgi.application"
 
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
@@ -198,7 +196,9 @@ DATABASES = {
         'PORT': '56034',
     }
 }
+
 DATA_UPLOAD_MAX_MEMORY_SIZE = 5221440
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -236,7 +236,6 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build','static')
-
 
 
 # Default primary key field type
