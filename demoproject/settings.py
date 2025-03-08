@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = "django-insecure-)!@l$jui7$djv2)agpy35z7-yzj24=+@ef=x-=johc3k)ll8pe"
 
-# CSRF_TRUSTED_ORIGINS = ['https://selene-m-h.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://parliament.up.railway.app']
 
 
 DEBUG = True
