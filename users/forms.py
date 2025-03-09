@@ -59,11 +59,14 @@ class reg_form(forms.ModelForm):
             instance.save()
         return instance
     
-class log_form(forms.ModelForm):
-    class Meta:
-        model = User
-        fields = ['password','email']
-        widgets = {
-            'password': forms.TextInput(attrs={'maxlength': '128', 'required': True, 'id': 'id_password'}),
-            'email': forms.EmailInput(attrs={'maxlength': '254', 'required': True, 'id': 'id_email'})
-        }
+class log_form(forms.Form):
+    email = forms.EmailField(
+        max_length=254,
+        required=True,
+        widget=forms.EmailInput(attrs={'id': 'id_email'})
+    )
+    password = forms.CharField(
+        max_length=128,
+        required=True,
+        widget=forms.PasswordInput(attrs={'id': 'id_password'})
+    )
