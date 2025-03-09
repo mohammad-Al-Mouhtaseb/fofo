@@ -1,8 +1,11 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'index/files/syr.png' %}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
     <title>مجلس الشعب السوري</title>
     <style>
         :root {
@@ -25,9 +28,9 @@
 
         /* Header Styles */
         .header {
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
-                        url('../images/header-bg.jpg') center/cover;
-            height: 200px;
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.01)), 
+                        url({% static 'index/files/index_background.png' %}) center/cover;
+            height: 160px;
             padding: 20px;
             position: relative;
         }
@@ -41,7 +44,15 @@
         /* Navigation */
         .main-nav {
             background: var(--primary-color);
-            padding: 1rem;
+            padding: 0.5rem;
+        }
+
+        .footer-content{
+            background: var(--primary-color);
+            /* padding-bottom: 36px; */
+            text-align: center;
+            color: #999;
+            margin-top: 20px;
         }
 
         .nav-list {
@@ -55,21 +66,22 @@
             cursor: pointer;
             padding: 0.5rem 1rem;
             transition: all 0.3s;
+            text-decoration: none;
         }
 
         /* Search Section */
         .search-section {
-            padding: 2rem;
+            padding: 1rem;
             background: var(--secondary-color);
             text-align: center;
         }
 
         .search-input {
-            width: 60%;
-            padding: 0.8rem;
+            width: 50%;
+            padding: 0.5rem;
             border: 2px solid var(--primary-color);
-            border-radius: 5px;
-            font-size: 1.1rem;
+            border-radius: 10px;
+            font-size: 1rem;
         }
 
         /* Legislation Grid */
@@ -83,7 +95,7 @@
         .legislation-card {
             border: 1px solid #ddd;
             border-radius: 8px;
-            padding: 1.5rem;
+            padding: 1.2rem;
             transition: transform 0.3s;
         }
 
@@ -107,16 +119,17 @@
 <body>
 
 <header class="header">
-    <img src="/EG8/logo.png" alt="شعار مجلس الشعب السوري" class="logo">
+    <img src="{% static 'index/files/syr.png' %}" alt="شعار مجلس الشعب السوري" class="logo" width="135">
 </header>
 
 <nav class="main-nav">
     <ul class="nav-list">
         <li class="nav-item">الرئيسية</li>
         <li class="nav-item">عن المجلس</li>
-        <li class="nav-item">التشريعات</li>
         <li class="nav-item">الأعضاء</li>
-        <li class="nav-item">الاتصال</li>
+        <li class="nav-item">التشريعات</li>
+        <li class="nav-item">القوانين</li>
+        <li class="nav-item">الترشح</li>
     </ul>
 </nav>
 
@@ -132,7 +145,26 @@
         <p>تعديل المادة 35 من قانون العمل</p>
         <a href="#" class="read-more">قراءة التفاصيل</a>
     </article>
-
+    <article class="legislation-card">
+        <h3>المرسوم التشريعي رقم 21</h3>
+        <p>تعديل المادة 35 من قانون العمل</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
+    <article class="legislation-card">
+        <h3>المرسوم التشريعي رقم 21</h3>
+        <p>تعديل المادة 35 من قانون العمل</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
+    <article class="legislation-card">
+        <h3>المرسوم التشريعي رقم 21</h3>
+        <p>تعديل المادة 35 من قانون العمل</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
+    <article class="legislation-card">
+        <h3>المرسوم التشريعي رقم 21</h3>
+        <p>تعديل المادة 35 من قانون العمل</p>
+        <a href="#" class="read-more">قراءة التفاصيل</a>
+    </article>
     <article class="legislation-card">
         <h3>قانون الجامعات</h3>
         <p>إنشاء جامعة النموذج للدراسات المتخصصة</p>
@@ -146,21 +178,20 @@
     </article>
 </main>
 
-<section class="members-section">
-    <h2>أعضاء المجلس</h2>
-    <div class="members-grid">
-        <!-- Member cards would go here -->
-    </div>
-</section>
-
 <footer>
     <div class="footer-content">
-        <p>جميع الحقوق محفوظة © مجلس الشعب السوري 2024</p>
-        <nav class="footer-nav">
-            <a href="#">سياسة الخصوصية</a>
-            <a href="#">شروط الاستخدام</a>
-            <a href="#">خريطة الموقع</a>
+        <nav class="nav-list">
+            <li class="nav-item">
+                <a href="#" class="nav-item">سياسة الخصوصية</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-item">شروط الاستخدام</a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-item">خريطة الموقع</a>
+            </li>
         </nav>
+        <p>جميع الحقوق محفوظة © مجلس الشعب السوري 2024</p>
     </div>
 </footer>
 
