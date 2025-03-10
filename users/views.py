@@ -110,7 +110,7 @@ def login_form(request):
                 return JsonResponse({'state': 'Error', 'exception': str(e)}, status=400)
         else:
             return JsonResponse({'state': 'invalid form', 'errors': form.errors}, status=400)
-        form = log_form()
+    form = log_form()
     return render(request, 'login_form.html', {'form': form})
 
 @csrf_exempt 
