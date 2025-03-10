@@ -49,16 +49,16 @@
                     </div>
                     <div class="card-body">
                         <h5 class="card-title">معلومات المستخدم</h5>
-                        <p><strong>الاسم:</strong> {{ form['name'] }}</p>
+                        <p><strong>الاسم:</strong> {{ form.name }}</p>
                         <p><strong>اسم الأب:</strong> {{ form.father_name }}</p>
-                        <p><strong>اسم الأم:</strong> {{ user.mother_name }}</p>
-                        <p><strong>البريد الإلكتروني:</strong> {{ user.email }}</p>
-                        <p><strong>رقم الهاتف:</strong> {{ user.phone_number }}</p>
-                        <p><strong>الجنس:</strong> {{ user.gender }}</p>
-                        <p><strong>تاريخ الميلاد:</strong> {{ user.birth }}</p>
+                        <p><strong>اسم الأم:</strong> {{ form.mother_name }}</p>
+                        <p><strong>البريد الإلكتروني:</strong> {{ form.email }}</p>
+                        <p><strong>رقم الهاتف:</strong> {{ form.phone_number }}</p>
+                        <p><strong>الجنس:</strong> {{ form.gender }}</p>
+                        <p><strong>تاريخ الميلاد:</strong> {{ form.birth }}</p>
                         <hr>
                         <h5 class="card-title">حالة القبول</h5>
-                        {% if is_accepted %}
+                        {% if form.is_accepted %}
                             <p class="status-accepted">مقبول ✅</p>
                         {% else %}
                             <p class="status-not-accepted">غير مقبول ❌</p>
