@@ -102,7 +102,7 @@ def login_form(request):
             try:
                 user = User.objects.get(email=email)
                 if user.is_active and user.password == password:
-                    return render(request, 'after_login.html',{'form':{"email":user.email,"name":user.name,"father_name":user.father_name,"mother_name":user.mother_name,"email":user.email,"phone_number":user.phone_number,"gender":user.gender,"birth":user.birth}})
+                    return render(request, 'after_login.html',{'form':{"email":user.email,"name":user.name,"father_name":user.father_name,"mother_name":user.mother_name,"email":user.email,"phone_number":user.phone_number,"gender":user.gender,"birth":user.birth,"is_accepted":user.is_accepted}})
                 return JsonResponse({'state': 'user not active or password incorrect'}, status=200) 
             except User.DoesNotExist:
                 return JsonResponse({'state': 'Email not exist'}, status=200)
