@@ -266,8 +266,10 @@ def open_file(request,file_name):
         with open(file_path, 'rb') as tmp_file:
             content = tmp_file.read().decode('utf-8', errors='replace')
             content = str(content)
-            content = content.replace(".","<br>")
-            content = content.replace(":","<br>")
+            content = content.replace(".",""" 
+""")
+            content = content.replace(":",""" 
+""")
             content="".join(content)
             return render(request, 'law_page.html',{"content":content})
     except:
