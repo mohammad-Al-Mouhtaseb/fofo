@@ -136,17 +136,17 @@
 <main class="legislation-grid">
     {% for i in docs %}
         <article class="legislation-card">
-            <h3>{{ i.title }}</h3>
-            <p style="font-size: 0.79em;">{{ i.content }}...</p>
-            <a href="https://parliament.up.railway.app/web/open/{{ i.file }}" class="read-more">قراءة التفاصيل</a>
+            <h3 style="display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;margin: 0.5em 0;height: 3em;line-height: 1.5em;">{{ i.title }}</h3>
+            <p style="display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;font-size: 0.79em;margin: 0.5em 0; height: 3em; line-height: 1.5em;">{{ i.content }}...</p>
+            <a href="https://parliament.up.railway.app/web/open/{{ i.file }}" class="read-more" style="display: block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin: 0.5em 0;">قراءة التفاصيل</a>
         </article>
     {% endfor %}
     {% for i in docs_search %}
         <article class="legislation-card">
-            <h3>{{ i.title }}</h3>
-            <p style="font-size: 0.79em;">{{ i.snippet }}...</p>
-            <a href="https://parliament.up.railway.app/web/open/{{ i.file }}" class="read-more">قراءة التفاصيل</a>
-            <!-- <p style="font-size: 0.79em; text-align: left; margin-bottom: 0px;">score: {{ i.score }}</p> -->
+            <h3 style="display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;margin: 0.5em 0;height: 3em;line-height: 1.5em;">{{ i.title }}</h3>
+            <p style="display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;font-size: 0.79em;margin: 0.5em 0; height: 3em; line-height: 1.5em;">{{ i.snippet }}...</p>
+            <a href="https://parliament.up.railway.app/web/open/{{ i.file }}" class="read-more" style="display: block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin: 0.5em -1;">قراءة التفاصيل</a>
+            <p style="font-size: 0.75em; text-align: left; margin: 0px;overflow: hidden;white-space: nowrap; text-overflow: ellipsis; margin: 0 -5  ;">score: {{ i.score }}</p>
         </article>
     {% endfor %}
 </main>
