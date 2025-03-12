@@ -90,7 +90,7 @@ def down(url):
                     content = raw_content.decode('latin-1', errors='replace')
                 content = text_preprocess(content).replace("‏","")
 
-          with open(file_path, 'wb') as tmp_file:  # Write binary
+          with open(file_path, 'wb') as tmp_file:
             tmp_file.write(content.encode('utf-8'))
           pages.append({
             'url': filename,
