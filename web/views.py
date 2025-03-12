@@ -55,7 +55,7 @@ def text_preprocess(text: str) -> str:
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-download_dir = os.path.join(BASE_DIR, 'static','downloaded_files')
+download_dir = os.path.join(BASE_DIR, 'static','downloaded_docs')
 os.makedirs(download_dir, exist_ok=True)
 
 pages = []
@@ -70,13 +70,18 @@ def down(url):
               filename = unquote(content_disposition.split('filename=')[1].split(';')[0].strip('"\''))
               filename = filename.encode('latin-1').decode('utf-8')
           else:
-              filename = response.iter_content[0:15]+".txt"
-          
+              filename = response.iter_content[0:100]+".txt"
+
+          if len(str(filename))>90:
+              filename=str(str(filename[0:80])+".txt")
+              print("filename= "+filename)
+
           file_path = os.path.join(download_dir, filename)
           with open(file_path, 'wb') as f:
               for chunk in response.iter_content(chunk_size=42000):
                   if chunk:
                       f.write(chunk)
+
           with open(file_path, 'rb') as tmp_file:
                 raw_content = tmp_file.read()
                 try:
@@ -84,7 +89,9 @@ def down(url):
                 except UnicodeDecodeError:
                     content = raw_content.decode('latin-1', errors='replace')
                 content = text_preprocess(content).replace("‏","")
-          tmp_file.write(content)
+
+          with open(file_path, 'wb') as tmp_file:  # Write binary
+            tmp_file.write(content.encode('utf-8'))
           pages.append({
             'url': filename,
             'original_content': content,
@@ -114,9 +121,9 @@ def correct(file):
         tmp_file.write(processed_content.encode('utf-8'))
 
 # to download the files
-# for url in urls:
-#   if url.find("https://docs") != -1:
-#     down(url)
+for url in urls:
+  if url.find("https://docs") != -1:
+    down(url)
 
 # to correct the files
 # for file in os.listdir(download_dir):
