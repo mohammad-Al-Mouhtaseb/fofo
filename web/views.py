@@ -186,7 +186,7 @@ def highlight_keywords(text, query_terms):
     for word in words:
         normalized = normalize_for_highlight(word)
         if any(term in normalized for term in query_terms):
-            highlighted.append(f"\033[1;31m{word}\033[0m")  # تمييز باللون الأحمر
+            highlighted.append(f"{word}")
         else:
             highlighted.append(word)
     return ' '.join(highlighted)
@@ -222,13 +222,27 @@ vectorizer, tfidf_matrix = build_index(pages)
 
 
 def search(request,q):
-    query = q
-    results = search_query(query, vectorizer, tfidf_matrix, pages)
-    for i, (page, score, snippet) in enumerate(results, 1):
-      if (score)>0.001:
-        return HttpResponse(f"\nالنتيجة {i} (التقييم: {score:.4f})"+"\n"+f"العنوان: {page['title']}"+"\n"+f"الرابط: {page['url']}")
+    try:
+        res=[]
+        query = str(q).split("%20")
+        query=str(query)
+        results = search_query(query, vectorizer, tfidf_matrix, pages)
+        for i, (page, score, snippet) in enumerate(results, 1):
+            if (score)>0.001:
+                if len(str(snippet).split(" "))>10:
+                    snippet=str(snippet).split(" ")[0:20]
+                res.append({"result":i, "evaluate":score, "sorce":page['title'],"snippet":" ".join(snippet)})
+                    # f"النتيجة {i} (التقييم: {score:.4f})"+f"العنوان: {page['title']}"+f"الرابط: {page['url']}"+snippet)
+        return JsonResponse({"docs":res})
+    except:
+        return HttpResponse("البحث باللغة العربية فقط")
 
-
+def get_all_docs(request):
+    res=[]
+    for file in os.listdir(download_dir):
+        if os.path.isfile(os.path.join(download_dir, file)):
+            res.append(file)
+    return JsonResponse({"docs":res})
 def open_file(request,file_name):
     return HttpResponse("asd")
     # file_path=os.path.join(download_dir, file_name)
