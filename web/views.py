@@ -230,7 +230,7 @@ vectorizer, tfidf_matrix = build_index(pages)
 
 def search(request,q):
     try:
-        res=[]
+        docs_search=[]
         query = str(q).split("%20")
         query=str(query)
         results = search_query(query, vectorizer, tfidf_matrix, pages)
@@ -238,25 +238,36 @@ def search(request,q):
             if (score)>0.001:
                 if len(str(snippet).split(" "))>10:
                     snippet=str(snippet).split(" ")[0:20]
-                res.append({"result":i, "evaluate":score, "sorce":page['title'],"snippet":" ".join(snippet)})
-                    # f"النتيجة {i} (التقييم: {score:.4f})"+f"العنوان: {page['title']}"+f"الرابط: {page['url']}"+snippet)
-        return JsonResponse({"docs":res})
+                title=str(page['title']).replace(".txt","")
+                title="".join(title)
+                docs_search.append({"result":i, "score":score, "title":title,"file":page['title'],"snippet":" ".join(snippet)})
+        return render(request, 'show_as_tree.html',{"docs_search":docs_search})
     except:
         return HttpResponse("البحث باللغة العربية فقط")
 
 def get_all_docs(request):
-    res=[]
+    docs=[]
     for file in os.listdir(download_dir):
-        if os.path.isfile(os.path.join(download_dir, file)):
-            res.append(file)
-    return JsonResponse({"docs":res})
+        file_path = os.path.join(download_dir, file)
+        if os.path.isfile(file_path):
+            with open(file_path, 'rb') as tmp_file:
+                content = tmp_file.read().decode('utf-8', errors='replace')
+                content=str(content).split(" ")[0:20]
+                content=" ".join(content)
+                title=str(file).replace(".txt","")
+                title="".join(title)
+            docs.append({"file":file,"content":content, "title":title})
+    return render(request, 'show_as_tree.html',{"docs":docs})
 
 def open_file(request,file_name):
     file_path=os.path.join(download_dir, file_name)
-    with open(file_path, 'rb') as tmp_file:
-        content = tmp_file.read()
-        return render(request, 'law_page.html.html',{"content":content})
-    
+    try:
+        with open(file_path, 'rb') as tmp_file:
+            content = tmp_file.read().decode('utf-8', errors='replace')
+            # content = str(content).split(".")
+            return render(request, 'law_page.html',{"content":content})
+    except:
+        return HttpResponse("الملف غير موجود!")
 
 def constitution(request):
         return render(request, 'constitution.html')

@@ -1,26 +1,162 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="icon" href="{% static 'index/files/syr.png' %}" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
+    <title>مجلس الشعب السوري</title>
+    <style>
+        :root {
+            --primary-color: #7b181b;
+            --secondary-color: #E3E3E3;
+            --text-color: #2c3e50;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.01)),
+            url({% static 'index/files/index_background.png' %}) center/cover;
+            height: 160px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .logo {
+            float: right;
+            max-width: 200px;
+            height: auto;
+        }
+
+        /* Navigation */
+        .main-nav {
+            background: var(--primary-color);
+            padding: 0.5rem;
+        }
+
+        .footer-content {
+            /* background: var(--primary-color); */
+            /* padding-bottom: 36px; */
+            text-align: center;
+            color: #444;
+        }
+
+        .nav-list {
+            list-style: none;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .nav-item {
+            color: white;
+            cursor: pointer;
+            padding: 0.5rem 1rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 1rem;
+            background: var(--secondary-color);
+            text-align: center;
+        }
+
+        .search-input {
+            width: 50%;
+            padding: 0.5rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        /* Legislation Grid */
+        .legislation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+        }
+
+        .legislation-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.2rem;
+            transition: transform 0.3s;
+        }
+
+        .legislation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-list {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+    <script>
+        function search() {
+            x = document.getElementById("search-box").value;
+            alert(x)
+            window.location.replace("https://parliament.up.railway.app/web/search/" + x);
+        }
+    </script>
 </head>
 
 <body>
+
+    <header class="header">
+        <img src="{% static 'index/files/syr.png' %}" alt="شعار مجلس الشعب السوري" class="logo" width="135">
+    </header>
+
+    <nav class="main-nav">
+        <ul class="nav-list">
+            <a href="#" style="text-decoration: none; color: #fff;">
+                <li class="nav-item">الصفحة الرئيسية</li>
+            </a>
+            <a href="#" style="text-decoration: none; color: #fff;">
+                <li class="nav-item">عن المجلس والأعضاء</li>
+            </a>
+            <a href="https://parliament.up.railway.app/web/constitution" style="text-decoration: none; color: #fff;">
+                <li class="nav-item">الدستور السوري</li>
+            </a>
+            <a href="https://parliament.up.railway.app/web/get_all" style="text-decoration: none; color: #fff;">
+                <li class="nav-item">القوانين والتشريعات</li>
+            </a>
+            <a href="#" style="text-decoration: none; color: #fff;">
+                <li class="nav-item">الترشح والانتخابات</li>
+            </a>
+        </ul>
+    </nav>
     <div id="intro" style="padding-right:5px;padding-left:5px;display:block;">
-        <div
-            style="border: 1px solid rgb(123, 24, 27); color: rgb(255, 255, 255); padding: 5px 10px; text-align: center; background: rgb(68, 8, 8);">
-            <strong style="direction: rtl; margin: 0px;">&nbsp;<span style="color: rgb(218, 165, 32);"><span
-                        style="font-size: 26px;">دستور الجمهورية
-                        العربية السورية</span></span></strong>
-        </div>
 
         <p
             style="direction: rtl; margin: 0px; color: rgb(0, 0, 0); font-family: Tahoma; font-size: medium; line-height: 20px; text-align: right;">
             <span style="direction: rtl; margin: 0px;"><strong
                     style="direction: rtl; margin: 0px;">&nbsp;</strong></span>
         </p>
+        <div style="border:color: rgb(255, 255, 255); padding: 5px 10px; text-align: center;">
+            <strong style="direction: rtl; margin: 0px;">&nbsp;<span style="color: rgb(181, 131, 6);"><span
+                        style="font-size: 26px;">دستور الجمهورية
+                        العربية السورية</span></span></strong>
+        </div>
 
         <p
             style="direction: rtl; margin: 0px; color: rgb(0, 0, 0); font-family: Tahoma; font-size: medium; line-height: 20px; text-align: right;">
@@ -1045,6 +1181,13 @@
         </p>
     </div>
     </div>
+
+    <footer>
+        <div class="footer-content">
+            <p>جميع الحقوق محفوظة © مجلس الشعب السوري 2025</p>
+        </div>
+    </footer>
+
 </body>
 
 </html>
