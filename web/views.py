@@ -121,9 +121,9 @@ def correct(file):
         tmp_file.write(processed_content.encode('utf-8'))
 
 # to download the files
-for url in urls:
-  if url.find("https://docs") != -1:
-    down(url)
+# for url in urls:
+#   if url.find("https://docs") != -1:
+#     down(url)
 
 # to correct the files
 # for file in os.listdir(download_dir):
@@ -250,9 +250,10 @@ def get_all_docs(request):
         if os.path.isfile(os.path.join(download_dir, file)):
             res.append(file)
     return JsonResponse({"docs":res})
+
 def open_file(request,file_name):
     return HttpResponse("asd")
-    # file_path=os.path.join(download_dir, file_name)
-    # with open(file_path, 'rb') as tmp_file:
-    #     content = tmp_file.read()
-    #     return HttpResponse(content)
+    file_path=os.path.join(download_dir, file_name)
+    with open(file_path, 'rb') as tmp_file:
+        content = tmp_file.read()
+        return HttpResponse(content)
