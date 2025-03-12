@@ -268,6 +268,7 @@ def open_file(request,file_name):
             content = str(content)
             content = content.replace(".",".<br>")
             content = content.replace(":",":<br>")
+            content = content.replace("بشار الأسد","")#ساقط ساقط يا حمار
             content = "".join(content)
             content = content.split("<br>")
             content = [s for s in content if s.strip() and s.strip() != "."]
