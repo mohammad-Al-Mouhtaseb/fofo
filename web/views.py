@@ -184,3 +184,10 @@ def query(request,q):
     for i, (page, score, snippet) in enumerate(results, 1):
       if (score)>0.001:
         return HttpResponse(f"\nالنتيجة {i} (التقييم: {score:.4f})"+"\n"+f"العنوان: {page['title']}"+"\n"+f"الرابط: {page['url']}")
+
+
+def open_file(request,file_name):
+    file_path=os.path.join(download_dir, file_name)
+    with open(file_path, 'rb') as tmp_file:
+        content = tmp_file.read()
+        return HttpResponse(content)
