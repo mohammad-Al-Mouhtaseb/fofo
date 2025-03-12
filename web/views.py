@@ -252,7 +252,6 @@ def get_all_docs(request):
     return JsonResponse({"docs":res})
 
 def open_file(request,file_name):
-    return HttpResponse("asd")
     file_path=os.path.join(download_dir, file_name)
     with open(file_path, 'rb') as tmp_file:
         content = tmp_file.read()
