@@ -235,7 +235,7 @@ def search(request,q):
         query=str(query)
         results = search_query(query, vectorizer, tfidf_matrix, pages)
         for i, (page, score, snippet) in enumerate(results, 1):
-            if (score)>0.001:
+            if (score)>0.001 and title.find(".txt") != -1:
                 if len(str(snippet).split(" "))>10:
                     snippet=str(snippet).split(" ")[0:20]
                 title=str(page['title']).replace(".txt","")
@@ -243,20 +243,21 @@ def search(request,q):
                 docs_search.append({"result":i, "score":score, "title":title,"file":page['title'],"snippet":" ".join(snippet)})
         return render(request, 'show_as_tree.html',{"docs_search":docs_search})
     except:
-        return HttpResponse("البحث باللغة العربية فقط")
+        return HttpResponse("لا يوجد نتائج..")
 
 def get_all_docs(request):
     docs=[]
     for file in os.listdir(download_dir):
         file_path = os.path.join(download_dir, file)
         if os.path.isfile(file_path):
-            with open(file_path, 'rb') as tmp_file:
-                content = tmp_file.read().decode('utf-8', errors='replace')
-                content=str(content).split(" ")[0:20]
-                content=" ".join(content)
-                title=str(file).replace(".txt","")
-                title="".join(title)
-            docs.append({"file":file,"content":content, "title":title})
+            if file_path.find(".txt")>0:
+                with open(file_path, 'rb') as tmp_file:
+                    content = tmp_file.read().decode('utf-8', errors='replace')
+                    content=str(content).split(" ")[0:20]
+                    content=" ".join(content)
+                    title=str(file).replace(".txt","")
+                    title="".join(title)
+                docs.append({"file":file,"content":content, "title":title})
     return render(request, 'show_as_tree.html',{"docs":docs})
 
 def open_file(request,file_name):
@@ -264,7 +265,8 @@ def open_file(request,file_name):
     try:
         with open(file_path, 'rb') as tmp_file:
             content = tmp_file.read().decode('utf-8', errors='replace')
-            # content = str(content).split(".")
+            content = str(content).split(".").split(":")
+            content = str(content).replace(".","")
             return render(request, 'law_page.html',{"content":content})
     except:
         return HttpResponse("الملف غير موجود!")
