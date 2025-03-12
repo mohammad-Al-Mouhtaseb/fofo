@@ -265,8 +265,8 @@ def open_file(request,file_name):
     try:
         with open(file_path, 'rb') as tmp_file:
             content = tmp_file.read().decode('utf-8', errors='replace')
-            content = str(content).split(".").split(":")
-            content = str(content).replace(".","")
+            content = str(content)
+            content = content.split(".").split(":").replace(".","")
             return render(request, 'law_page.html',{"content":content})
     except:
         return HttpResponse("الملف غير موجود!")
