@@ -2,20 +2,21 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseForbidden
 from bs4 import BeautifulSoup
 import re
-from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
 from nltk.corpus import stopwords
 import nltk
 from pyarabic import araby
-nltk.download('stopwords')
+nltk.download('stopwords', quiet=True)
 from nltk.stem.isri import ISRIStemmer
 import os
 from pathlib import Path
 from urllib.parse import unquote
 import requests
 nltk.download('punkt')
-arabic_stopwords = stopwords.words('arabic')
 nltk.download('punkt_tab')
 
+
+arabic_stopwords = set(stopwords.words('arabic'))
 
 url = "https://groups.google.com/g/syrianlaw/c/Wba7S8LT9MU?pli=1"
 
@@ -119,11 +120,30 @@ def correct(file):
 
 # to correct the files
 # for file in os.listdir(download_dir):
-#     if os.path.isfile(os.path.join(download_dir, file)):  # Check if it's a file
+#     if os.path.isfile(os.path.join(download_dir, file)):
 #         print(f"Processing: {file}")
 #         correct(file)
 
-arabic_stopwords = set(stopwords.words('arabic'))
+def docs(file):
+    try:
+        file_path = os.path.join(download_dir, file)
+    
+        with open(file_path, 'rb') as tmp_file:
+            raw_content = tmp_file.read()
+        content = raw_content.decode('utf-8', errors='replace')
+        pages.append({
+        'url': file,
+        'original_content': content,
+        'title': file,
+        'headings': file
+        })
+    except Exception as e:
+      print(f"An error occurred: {e}")
+
+# to retrivel the docs
+for file in os.listdir(download_dir):
+    if os.path.isfile(os.path.join(download_dir, file)):
+        docs(file)
 
 def preprocess_for_indexing(text):
     text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
@@ -201,7 +221,7 @@ print("جاري بناء الفهرس...")
 vectorizer, tfidf_matrix = build_index(pages)
 
 
-def query(request,q):
+def search(request,q):
     query = q
     results = search_query(query, vectorizer, tfidf_matrix, pages)
     for i, (page, score, snippet) in enumerate(results, 1):
@@ -210,7 +230,8 @@ def query(request,q):
 
 
 def open_file(request,file_name):
-    file_path=os.path.join(download_dir, file_name)
-    with open(file_path, 'rb') as tmp_file:
-        content = tmp_file.read()
-        return HttpResponse(content)
+    return HttpResponse("asd")
+    # file_path=os.path.join(download_dir, file_name)
+    # with open(file_path, 'rb') as tmp_file:
+    #     content = tmp_file.read()
+    #     return HttpResponse(content)

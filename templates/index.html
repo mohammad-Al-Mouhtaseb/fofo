@@ -111,10 +111,11 @@
         }
     </style>
     <script>
-        function searsh(){
-            x=document.getElementById("searsh-box").value;
-            window.location.href = 'http://127.0.0.1:8000/searsh/'+x;
-            // window.location.href = 'https://parliament.up.railway.app/searsh/'+x;
+        function search(){
+            x=document.getElementById("search-box").value;
+            alert(x)
+            // window.location.replace("http://127.0.0.1:8000/search/"+x);
+            window.location.replace("https://parliament.up.railway.app/search/"+x);
         }
     </script>
 </head>
@@ -136,8 +137,8 @@
 
 <section class="search-section">
     <h2>بحث سريع في القوانين والتشريعات</h2>
-    <input type="text" class="search-box" placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
-    <button class="search-btn" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;" onclick="searsh()">بحث</button>
+    <input type="text" id="search-box" class="search-box" placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
+    <button class="search-btn" onclick="search()" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث</button>
 </section>
 
 <main class="legislation-grid">
