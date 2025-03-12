@@ -255,4 +255,8 @@ def open_file(request,file_name):
     file_path=os.path.join(download_dir, file_name)
     with open(file_path, 'rb') as tmp_file:
         content = tmp_file.read()
-        return HttpResponse(content)
+        return render(request, 'law_page.html.html',{"content":content})
+    
+
+def constitution(request):
+        return render(request, 'constitution.html')
