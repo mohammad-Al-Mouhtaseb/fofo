@@ -132,8 +132,11 @@
         <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الترشح والانتخابات</li></a>
     </ul>
 </nav>
-<div style="width: 70%; text-align: justify;margin: auto;margin-top: 50px; font-size: 1.2em;">
-    {{ content }}
+<div style="width: 70%; text-align: justify;margin: auto;margin-top: 50px; font-size: 1.1em;">
+    {% for i in content %}
+        {{ i }}
+        <br>
+    {% endfor %}
 </div>
 <footer>
     <div class="footer-content">

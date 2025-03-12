@@ -266,11 +266,11 @@ def open_file(request,file_name):
         with open(file_path, 'rb') as tmp_file:
             content = tmp_file.read().decode('utf-8', errors='replace')
             content = str(content)
-            content = content.replace(".",""" 
-""")
-            content = content.replace(":",""" 
-""")
-            content="".join(content)
+            content = content.replace(".",".<br>")
+            content = content.replace(":",":<br>")
+            content = "".join(content)
+            content = content.split("<br>")
+            content = [s for s in content if s.strip() and s.strip() != "."]
             return render(request, 'law_page.html',{"content":content})
     except:
         return HttpResponse("الملف غير موجود!")
