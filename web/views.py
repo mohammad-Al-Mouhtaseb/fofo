@@ -82,7 +82,8 @@ def down(url):
                     content = raw_content.decode('utf-8')
                 except UnicodeDecodeError:
                     content = raw_content.decode('latin-1', errors='replace')
-                content = text_preprocess(content)
+                content = text_preprocess(content).replace("‏","")
+          tmp_file.write(content)
           pages.append({
             'url': filename,
             'original_content': content,
@@ -95,10 +96,32 @@ def down(url):
   except Exception as e:
       print(f"An error occurred: {e}")
 
-for url in urls:
-  if url.find("https://docs") != -1:
-    down(url)
 
+def correct(file):
+    file_path = os.path.join(download_dir, file)
+    
+    # 1. Read the file content first
+    with open(file_path, 'rb') as tmp_file:  # Read binary
+        raw_content = tmp_file.read()
+    
+    # 2. Process the content (decode bytes to string)
+    content = raw_content.decode('utf-8', errors='replace')  # Handle encoding
+    processed_content = text_preprocess(content).replace("‏", "")
+    
+    # 3. Write the modified content back
+    with open(file_path, 'wb') as tmp_file:  # Write binary
+        tmp_file.write(processed_content.encode('utf-8'))
+
+# to download the files
+# for url in urls:
+#   if url.find("https://docs") != -1:
+#     down(url)
+
+# to correct the files
+# for file in os.listdir(download_dir):
+#     if os.path.isfile(os.path.join(download_dir, file)):  # Check if it's a file
+#         print(f"Processing: {file}")
+#         correct(file)
 
 arabic_stopwords = set(stopwords.words('arabic'))
 
