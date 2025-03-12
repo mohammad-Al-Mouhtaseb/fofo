@@ -38,21 +38,20 @@ _HINDI_NUMS = "٠١٢٣٤٥٦٧٨٩"
 _ARABIC_NUMS = "0123456789"
 HINDI_TO_ARABIC_MAP = str.maketrans(_HINDI_NUMS, _ARABIC_NUMS)
 
+
 def text_preprocess(text: str) -> str:
     text = str(text)
     text = araby.strip_tashkeel(text)
     text = araby.strip_tatweel(text)
     text = text.translate(HINDI_TO_ARABIC_MAP)
-    text = re.sub("([^0-9\u0621-\u063A\u0641-\u064A\u0660-\u0669a-zA-Z\[\]])",r" \1 ",text,)
-    # insert whitespace between words and numbers or numbers and words
-    text = re.sub("(\d+)([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)", r" \1 \2 ", text)
-    text = re.sub("([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)(\d+)", r" \1 \2 ", text)
+    text = re.sub(r"([^0-9\u0621-\u063A\u0641-\u064A\u0660-\u0669a-zA-Z\[\]])", r" \1 ", text) 
+    text = re.sub(r"(\d+)([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)", r" \1 \2 ", text)
+    text = re.sub(r"([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)(\d+)", r" \1 \2 ", text)
     text = text.replace("/", "-")
-    # remove unwanted characters
     text = re.sub(REJECTED_CHARS_REGEX, " ", text)
-    # remove extra spaces
     text = " ".join(text.replace("\uFE0F", "").split())
     return text
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 download_dir = os.path.join(BASE_DIR, 'static','downloaded_files')
@@ -68,7 +67,6 @@ def down(url):
           filename = None
           if 'filename=' in content_disposition:
               filename = unquote(content_disposition.split('filename=')[1].split(';')[0].strip('"\''))
-              filename.replace("0x81","").replace("0x8f","")
               filename = filename.encode('latin-1').decode('utf-8')
           else:
               filename = response.iter_content[0:15]+".txt"
@@ -78,15 +76,19 @@ def down(url):
               for chunk in response.iter_content(chunk_size=42000):
                   if chunk:
                       f.write(chunk)
-              tmp_file = open(download_dir+"/"+filename)
-              content=text_preprocess(tmp_file.read())
-              tmp_file.close()
-              pages.append({
-                'url': filename,
-                'original_content': content,
-                'title': filename,
-                'headings': filename
-              })
+          with open(file_path, 'rb') as tmp_file:
+                raw_content = tmp_file.read()
+                try:
+                    content = raw_content.decode('utf-8')
+                except UnicodeDecodeError:
+                    content = raw_content.decode('latin-1', errors='replace')
+                content = text_preprocess(content)
+          pages.append({
+            'url': filename,
+            'original_content': content,
+            'title': filename,
+            'headings': filename
+          })
           print(f"Successfully downloaded: {filename}")
       else:
           print(f"Failed to download. Status code: {response.status_code}")
