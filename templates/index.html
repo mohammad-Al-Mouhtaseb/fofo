@@ -110,6 +110,13 @@
             }
         }
     </style>
+    <script>
+        function searsh(){
+            x=document.getElementById("searsh-box").value;
+            window.location.href = 'http://127.0.0.1:8000/searsh/'+x;
+            // window.location.href = 'https://parliament.up.railway.app/searsh/'+x;
+        }
+    </script>
 </head>
 <body>
 
@@ -119,19 +126,18 @@
 
 <nav class="main-nav">
     <ul class="nav-list">
-        <li class="nav-item">الرئيسية</li>
-        <li class="nav-item">عن المجلس</li>
-        <li class="nav-item">الأعضاء</li>
-        <li class="nav-item">التشريعات</li>
-        <li class="nav-item">القوانين</li>
-        <li class="nav-item">الترشح</li>
+        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الصفحة الرئيسية</li></a>
+        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">عن المجلس والأعضاء</li></a>
+        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الدستور السوري</li></a>
+        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">القوانين والتشريعات</li></a>
+        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الترشح والانتخابات</li></a>
     </ul>
 </nav>
 
 <section class="search-section">
-    <h2>بحث سريع في التشريعات</h2>
-    <input type="text" class="search-input" placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
-    <button class="search-btn" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث</button>
+    <h2>بحث سريع في القوانين والتشريعات</h2>
+    <input type="text" class="search-box" placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
+    <button class="search-btn" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;" onclick="searsh()">بحث</button>
 </section>
 
 <main class="legislation-grid">

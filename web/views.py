@@ -1,0 +1,184 @@
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseForbidden
+from bs4 import BeautifulSoup
+import re
+from sklearn.feature_extraction.text import TfidfVectorizer
+from nltk.corpus import stopwords
+import nltk
+from pyarabic import araby
+nltk.download('stopwords')
+from nltk.stem.isri import ISRIStemmer
+import os
+from pathlib import Path
+from urllib.parse import unquote
+import requests
+nltk.download('punkt')
+arabic_stopwords = stopwords.words('arabic')
+nltk.download('punkt_tab')
+
+
+url = "https://groups.google.com/g/syrianlaw/c/Wba7S8LT9MU?pli=1"
+
+urls =[]
+
+response = requests.get(url)
+if response.status_code == 200:
+    soup = BeautifulSoup(response.content, "html.parser")
+    a_tags = soup.find_all("a")
+    for tag in a_tags:
+        urls.append(tag.get("href"))
+else:
+    print(f"Failed to fetch {url}. Status code: {response.status_code}")
+
+REJECTED_CHARS_REGEX = r"[^0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘]"
+
+CHARS_REGEX = r"0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘"
+
+_HINDI_NUMS = "٠١٢٣٤٥٦٧٨٩"
+_ARABIC_NUMS = "0123456789"
+HINDI_TO_ARABIC_MAP = str.maketrans(_HINDI_NUMS, _ARABIC_NUMS)
+
+def text_preprocess(text: str) -> str:
+    text = str(text)
+    text = araby.strip_tashkeel(text)
+    text = araby.strip_tatweel(text)
+    text = text.translate(HINDI_TO_ARABIC_MAP)
+    text = re.sub("([^0-9\u0621-\u063A\u0641-\u064A\u0660-\u0669a-zA-Z\[\]])",r" \1 ",text,)
+    # insert whitespace between words and numbers or numbers and words
+    text = re.sub("(\d+)([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)", r" \1 \2 ", text)
+    text = re.sub("([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)(\d+)", r" \1 \2 ", text)
+    text = text.replace("/", "-")
+    # remove unwanted characters
+    text = re.sub(REJECTED_CHARS_REGEX, " ", text)
+    # remove extra spaces
+    text = " ".join(text.replace("\uFE0F", "").split())
+    return text
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+download_dir = os.path.join(BASE_DIR, 'static','downloaded_files')
+os.makedirs(download_dir, exist_ok=True)
+
+pages = []
+
+def down(url):
+  try:
+      response = requests.get(url, stream=True)
+      if response.status_code == 200:
+          content_disposition = response.headers.get('Content-Disposition', '')
+          filename = None
+          if 'filename=' in content_disposition:
+              filename = unquote(content_disposition.split('filename=')[1].split(';')[0].strip('"\''))
+              filename.replace("0x81","").replace("0x8f","")
+              filename = filename.encode('latin-1').decode('utf-8')
+          else:
+              filename = response.iter_content[0:15]+".txt"
+          
+          file_path = os.path.join(download_dir, filename)
+          with open(file_path, 'wb') as f:
+              for chunk in response.iter_content(chunk_size=42000):
+                  if chunk:
+                      f.write(chunk)
+              tmp_file = open(download_dir+"/"+filename)
+              content=text_preprocess(tmp_file.read())
+              tmp_file.close()
+              pages.append({
+                'url': filename,
+                'original_content': content,
+                'title': filename,
+                'headings': filename
+              })
+          print(f"Successfully downloaded: {filename}")
+      else:
+          print(f"Failed to download. Status code: {response.status_code}")
+  except Exception as e:
+      print(f"An error occurred: {e}")
+
+for url in urls:
+  if url.find("https://docs") != -1:
+    down(url)
+
+
+arabic_stopwords = set(stopwords.words('arabic'))
+
+def preprocess_for_indexing(text):
+    text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
+    text = re.sub(r'\d+', '', text)
+    text = re.sub('[إأآا]', 'ا', text)
+    text = re.sub('ى', 'ي', text)
+    text = re.sub('ؤ', 'ء', text)
+    text = re.sub('ئ', 'ء', text)
+    text = re.sub('ة', 'ه', text)
+    text = re.sub('[\u064B-\u065F]', '', text)
+    words = nltk.word_tokenize(text)
+    stemmer = ISRIStemmer()
+    stemmed_words = [stemmer.stem(w) for w in words]
+    filtered_words = [w for w in stemmed_words if w not in arabic_stopwords]
+    return ' '.join(filtered_words)
+
+def normalize_for_highlight(text):
+    text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
+    text = re.sub('[إأآا]', 'ا', text)
+    text = re.sub('ى', 'ي', text)
+    text = re.sub('ؤ', 'ء', text)
+    text = re.sub('ئ', 'ء', text)
+    text = re.sub('ة', 'ه', text)
+    text = re.sub('[\u064B-\u065F]', '', text)
+    return text
+
+def build_index(pages):
+    processed_docs = []
+    for page in pages:
+        combined = f"{page['title']} {page['headings']} {page['original_content']}"
+        processed = preprocess_for_indexing(combined)
+        processed_docs.append(processed)
+    vectorizer = TfidfVectorizer()
+    tfidf_matrix = vectorizer.fit_transform(processed_docs)
+    return vectorizer, tfidf_matrix
+
+def highlight_keywords(text, query_terms):
+    words = araby.tokenize(text)
+    highlighted = []
+    for word in words:
+        normalized = normalize_for_highlight(word)
+        if any(term in normalized for term in query_terms):
+            highlighted.append(f"\033[1;31m{word}\033[0m")  # تمييز باللون الأحمر
+        else:
+            highlighted.append(word)
+    return ' '.join(highlighted)
+
+def search_query(query, vectorizer, tfidf_matrix, pages, top_n=5):
+    query_processed = preprocess_for_indexing(query)
+    query_terms = query_processed.split()
+
+    # البحث عن الجمل التي تحتوي على الكلمات المفتاحية
+    results = []
+    for idx, page in enumerate(pages):
+        content = normalize_for_highlight(page['original_content'])
+        score = tfidf_matrix[idx].dot(vectorizer.transform([query_processed]).T).toarray()[0][0]
+        if score > 0:
+            sentences = content.split('.')
+            snippet = ""
+            for sent in sentences:
+                if any(term in sent for term in query_terms):
+                    snippet = highlight_keywords(sent, query_terms)
+                    break
+            if not snippet:
+                snippet = highlight_keywords(content[:200], query_terms)
+            results.append((page, score, snippet))
+
+    # ترتيب النتائج حسب الوزن
+    results.sort(key=lambda x: x[1], reverse=True)
+    return results[:top_n]
+
+
+print(f"تم استرداد {len(pages)} صفحة.")
+print("جاري بناء الفهرس...")
+vectorizer, tfidf_matrix = build_index(pages)
+
+
+def query(request,q):
+    query = q
+    results = search_query(query, vectorizer, tfidf_matrix, pages)
+    for i, (page, score, snippet) in enumerate(results, 1):
+      if (score)>0.001:
+        return HttpResponse(f"\nالنتيجة {i} (التقييم: {score:.4f})"+"\n"+f"العنوان: {page['title']}"+"\n"+f"الرابط: {page['url']}")
