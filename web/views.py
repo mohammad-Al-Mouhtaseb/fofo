@@ -15,7 +15,6 @@ import requests
 nltk.download('punkt')
 nltk.download('punkt_tab')
 
-
 arabic_stopwords = set(stopwords.words('arabic'))
 
 url = "https://groups.google.com/g/syrianlaw/c/Wba7S8LT9MU?pli=1"
