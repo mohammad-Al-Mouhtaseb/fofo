@@ -234,7 +234,7 @@ def search(request,q):
         query=str(query)
         results = search_query(query, vectorizer, tfidf_matrix, pages)
         for i, (page, score, snippet) in enumerate(results, 1):
-            if (score)>0.001 and str(title).find(".txt") != -1:
+            if (score)>0.001:# and str(title).find(".txt") != -1:
                 if len(str(snippet).split(" "))>10:
                     snippet=str(snippet).split(" ")[0:20]
                 title=str(page['title']).replace(".txt","")
