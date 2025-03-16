@@ -223,7 +223,6 @@ import requests
 nltk.download('punkt')
 nltk.download('punkt_tab')
 
-
 arabic_stopwords = set(stopwords.words('arabic'))
 
 
@@ -332,7 +331,7 @@ def normal_search(request,q):
         query=str(query)
         results = search_query(query, vectorizer, tfidf_matrix, pages)
         for i, (page, score, snippet) in enumerate(results, 1):
-            if (score)>0.001 and title.find(".txt") != -1:
+            if (score)>0.001:# and str(title).find(".txt") != -1:
                 if len(str(snippet).split(" "))>10:
                     snippet=str(snippet).split(" ")[0:20]
                 title=str(page['title']).replace(".txt","")
@@ -341,3 +340,37 @@ def normal_search(request,q):
         return render(request, 'show_as_tree.html',{"docs_search":docs_search})
     except:
         return HttpResponse("لا يوجد نتائج..")
+
+def get_all_docs(request):
+    docs=[]
+    for file in os.listdir(download_dir):
+        file_path = os.path.join(download_dir, file)
+        if os.path.isfile(file_path):
+            if file_path.find(".txt")>0:
+                with open(file_path, 'rb') as tmp_file:
+                    content = tmp_file.read().decode('utf-8', errors='replace')
+                    content=str(content).split(" ")[0:20]
+                    content=" ".join(content)
+                    title=str(file).replace(".txt","")
+                    title="".join(title)
+                docs.append({"file":file,"content":content, "title":title})
+    return render(request, 'show_as_tree.html',{"docs":docs})
+
+def open_file(request,file_name):
+    file_path=os.path.join(download_dir, file_name)
+    try:
+        with open(file_path, 'rb') as tmp_file:
+            content = tmp_file.read().decode('utf-8', errors='replace')
+            content = str(content)
+            content = content.replace(".",".<br>")
+            content = content.replace(":",":<br>")
+            content = content.replace("بشار الأسد","")#ساقط ساقط يا حمار
+            content = "".join(content)
+            content = content.split("<br>")
+            content = [s for s in content if s.strip() and s.strip() != "."]
+            return render(request, 'law_page.html',{"content":content})
+    except:
+        return HttpResponse("الملف غير موجود!")
+
+def constitution(request):
+        return render(request, 'constitution.html')
