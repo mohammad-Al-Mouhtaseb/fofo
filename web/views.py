@@ -5,11 +5,20 @@ from pathlib import Path
 from bs4 import BeautifulSoup
 from urllib.parse import unquote
 from langchain.schema.runnable import RunnableMap
+# import warnings
+
+
+# # from pydantic import ValidationError
+
+# # warnings.filterwarnings("ignore", category=UserWarning, module="pydantic._migration")
+# # set PYTHONWARNINGS="ignore"
+# # python -W ignore script.py
+
+from pydantic import ValidationError
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.prompts import ChatPromptTemplate
-from pydantic import ValidationError
 
 # from langchain.vectorstores import DocArrayInMemorySearch
 from langchain_community.vectorstores import DocArrayInMemorySearch
@@ -17,6 +26,18 @@ from langchain.schema.output_parser import StrOutputParser
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 import google.generativeai as genai
+
+from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
+from nltk.corpus import stopwords
+import nltk
+from pyarabic import araby
+nltk.download('stopwords', quiet=True)
+from nltk.stem.isri import ISRIStemmer
+nltk.download('punkt')
+nltk.download('punkt_tab')
+
+arabic_stopwords = set(stopwords.words('arabic'))
+
 
 API_KEY = "AIzaSyCnaJnmBKGH-KLMzAqSqqTFcUnuQpCNatc"
 
@@ -207,25 +228,6 @@ def constitution(request):
 
 
 # ######################################
-
-from bs4 import BeautifulSoup
-import re
-from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
-from nltk.corpus import stopwords
-import nltk
-from pyarabic import araby
-nltk.download('stopwords', quiet=True)
-from nltk.stem.isri import ISRIStemmer
-import os
-from pathlib import Path
-from urllib.parse import unquote
-import requests
-nltk.download('punkt')
-nltk.download('punkt_tab')
-
-arabic_stopwords = set(stopwords.words('arabic'))
-
-
 
 REJECTED_CHARS_REGEX = r"[^0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘]"
 
