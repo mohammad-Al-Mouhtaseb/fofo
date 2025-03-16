@@ -27,16 +27,16 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 import google.generativeai as genai
 
-from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
-from nltk.corpus import stopwords
-import nltk
-from pyarabic import araby
-nltk.download('stopwords', quiet=True)
-from nltk.stem.isri import ISRIStemmer
-nltk.download('punkt')
-nltk.download('punkt_tab')
+# from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
+# from nltk.corpus import stopwords
+# import nltk
+# from pyarabic import araby
+# nltk.download('stopwords', quiet=True)
+# from nltk.stem.isri import ISRIStemmer
+# nltk.download('punkt')
+# nltk.download('punkt_tab')
 
-arabic_stopwords = set(stopwords.words('arabic'))
+# arabic_stopwords = set(stopwords.words('arabic'))
 
 
 API_KEY = "AIzaSyCnaJnmBKGH-KLMzAqSqqTFcUnuQpCNatc"
@@ -229,119 +229,119 @@ def constitution(request):
 
 # ######################################
 
-REJECTED_CHARS_REGEX = r"[^0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘]"
+# REJECTED_CHARS_REGEX = r"[^0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘]"
 
-CHARS_REGEX = r"0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘"
+# CHARS_REGEX = r"0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘"
 
-_HINDI_NUMS = "٠١٢٣٤٥٦٧٨٩"
-_ARABIC_NUMS = "0123456789"
-HINDI_TO_ARABIC_MAP = str.maketrans(_HINDI_NUMS, _ARABIC_NUMS)
-
-
-def text_preprocess(text: str) -> str:
-    text = str(text)
-    text = araby.strip_tashkeel(text)
-    text = araby.strip_tatweel(text)
-    text = text.translate(HINDI_TO_ARABIC_MAP)
-    text = re.sub(r"([^0-9\u0621-\u063A\u0641-\u064A\u0660-\u0669a-zA-Z\[\]])", r" \1 ", text) 
-    text = re.sub(r"(\d+)([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)", r" \1 \2 ", text)
-    text = re.sub(r"([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)(\d+)", r" \1 \2 ", text)
-    text = text.replace("/", "-")
-    text = re.sub(REJECTED_CHARS_REGEX, " ", text)
-    text = " ".join(text.replace("\uFE0F", "").split())
-    return text
+# _HINDI_NUMS = "٠١٢٣٤٥٦٧٨٩"
+# _ARABIC_NUMS = "0123456789"
+# HINDI_TO_ARABIC_MAP = str.maketrans(_HINDI_NUMS, _ARABIC_NUMS)
 
 
-
-def preprocess_for_indexing(text):
-    text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
-    text = re.sub(r'\d+', '', text)
-    text = re.sub('[إأآا]', 'ا', text)
-    text = re.sub('ى', 'ي', text)
-    text = re.sub('ؤ', 'ء', text)
-    text = re.sub('ئ', 'ء', text)
-    text = re.sub('ة', 'ه', text)
-    text = re.sub('[\u064B-\u065F]', '', text)
-    words = nltk.word_tokenize(text)
-    stemmer = ISRIStemmer()
-    stemmed_words = [stemmer.stem(w) for w in words]
-    filtered_words = [w for w in stemmed_words if w not in arabic_stopwords]
-    return ' '.join(filtered_words)
-
-def normalize_for_highlight(text):
-    text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
-    text = re.sub('[إأآا]', 'ا', text)
-    text = re.sub('ى', 'ي', text)
-    text = re.sub('ؤ', 'ء', text)
-    text = re.sub('ئ', 'ء', text)
-    text = re.sub('ة', 'ه', text)
-    text = re.sub('[\u064B-\u065F]', '', text)
-    return text
-
-def build_index(pages):
-    processed_docs = []
-    for page in pages:
-        combined = f"{page['title']} {page['headings']} {page['content']}"
-        processed = preprocess_for_indexing(combined)
-        processed_docs.append(processed)
-    vectorizer = TfidfVectorizer()
-    tfidf_matrix = vectorizer.fit_transform(processed_docs)
-    return vectorizer, tfidf_matrix
-
-def highlight_keywords(text, query_terms):
-    words = araby.tokenize(text)
-    highlighted = []
-    for word in words:
-        normalized = normalize_for_highlight(word)
-        if any(term in normalized for term in query_terms):
-            highlighted.append(f"{word}")
-        else:
-            highlighted.append(word)
-    return ' '.join(highlighted)
-
-def search_query(query, vectorizer, tfidf_matrix, pages, top_n=5):
-    query_processed = preprocess_for_indexing(query)
-    query_terms = query_processed.split()
-
-    # البحث عن الجمل التي تحتوي على الكلمات المفتاحية
-    results = []
-    for idx, page in enumerate(pages):
-        content = normalize_for_highlight(page['content'])
-        score = tfidf_matrix[idx].dot(vectorizer.transform([query_processed]).T).toarray()[0][0]
-        if score > 0:
-            sentences = content.split('.')
-            snippet = ""
-            for sent in sentences:
-                if any(term in sent for term in query_terms):
-                    snippet = highlight_keywords(sent, query_terms)
-                    break
-            if not snippet:
-                snippet = highlight_keywords(content[:200], query_terms)
-            results.append((page, score, snippet))
-
-    # ترتيب النتائج حسب الوزن
-    results.sort(key=lambda x: x[1], reverse=True)
-    return results[:top_n]
-
-vectorizer, tfidf_matrix = build_index(pages)
+# def text_preprocess(text: str) -> str:
+#     text = str(text)
+#     text = araby.strip_tashkeel(text)
+#     text = araby.strip_tatweel(text)
+#     text = text.translate(HINDI_TO_ARABIC_MAP)
+#     text = re.sub(r"([^0-9\u0621-\u063A\u0641-\u064A\u0660-\u0669a-zA-Z\[\]])", r" \1 ", text) 
+#     text = re.sub(r"(\d+)([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)", r" \1 \2 ", text)
+#     text = re.sub(r"([\u0621-\u063A\u0641-\u064A\u0660-\u066C]+)(\d+)", r" \1 \2 ", text)
+#     text = text.replace("/", "-")
+#     text = re.sub(REJECTED_CHARS_REGEX, " ", text)
+#     text = " ".join(text.replace("\uFE0F", "").split())
+#     return text
 
 
-def normal_search(request,q):
-    try:
-        docs_search=[]
-        query = str(q).split("%20")
-        query=str(query)
-        results = search_query(query, vectorizer, tfidf_matrix, pages)
-        for i, (page, score, snippet) in enumerate(results, 1):
-            if (score)>0.001:# and str(title).find(".txt") != -1:
-                if len(str(snippet).split(" "))>10:
-                    snippet=str(snippet).split(" ")[0:20]
-                title=str(page['title']).replace(".txt","")
-                title="".join(title)
-                docs_search.append({"result":i, "score":score, "title":title,"file":page['title'],"snippet":" ".join(snippet)})
-        return render(request, 'show_as_tree.html',{"docs_search":docs_search})
-    except:
-        return HttpResponse("لا يوجد نتائج..")
+
+# def preprocess_for_indexing(text):
+#     text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
+#     text = re.sub(r'\d+', '', text)
+#     text = re.sub('[إأآا]', 'ا', text)
+#     text = re.sub('ى', 'ي', text)
+#     text = re.sub('ؤ', 'ء', text)
+#     text = re.sub('ئ', 'ء', text)
+#     text = re.sub('ة', 'ه', text)
+#     text = re.sub('[\u064B-\u065F]', '', text)
+#     words = nltk.word_tokenize(text)
+#     stemmer = ISRIStemmer()
+#     stemmed_words = [stemmer.stem(w) for w in words]
+#     filtered_words = [w for w in stemmed_words if w not in arabic_stopwords]
+#     return ' '.join(filtered_words)
+
+# def normalize_for_highlight(text):
+#     text = re.sub(r'[^\u0600-\u06FF\s]', '', text)
+#     text = re.sub('[إأآا]', 'ا', text)
+#     text = re.sub('ى', 'ي', text)
+#     text = re.sub('ؤ', 'ء', text)
+#     text = re.sub('ئ', 'ء', text)
+#     text = re.sub('ة', 'ه', text)
+#     text = re.sub('[\u064B-\u065F]', '', text)
+#     return text
+
+# def build_index(pages):
+#     processed_docs = []
+#     for page in pages:
+#         combined = f"{page['title']} {page['headings']} {page['content']}"
+#         processed = preprocess_for_indexing(combined)
+#         processed_docs.append(processed)
+#     vectorizer = TfidfVectorizer()
+#     tfidf_matrix = vectorizer.fit_transform(processed_docs)
+#     return vectorizer, tfidf_matrix
+
+# def highlight_keywords(text, query_terms):
+#     words = araby.tokenize(text)
+#     highlighted = []
+#     for word in words:
+#         normalized = normalize_for_highlight(word)
+#         if any(term in normalized for term in query_terms):
+#             highlighted.append(f"{word}")
+#         else:
+#             highlighted.append(word)
+#     return ' '.join(highlighted)
+
+# def search_query(query, vectorizer, tfidf_matrix, pages, top_n=5):
+#     query_processed = preprocess_for_indexing(query)
+#     query_terms = query_processed.split()
+
+#     # البحث عن الجمل التي تحتوي على الكلمات المفتاحية
+#     results = []
+#     for idx, page in enumerate(pages):
+#         content = normalize_for_highlight(page['content'])
+#         score = tfidf_matrix[idx].dot(vectorizer.transform([query_processed]).T).toarray()[0][0]
+#         if score > 0:
+#             sentences = content.split('.')
+#             snippet = ""
+#             for sent in sentences:
+#                 if any(term in sent for term in query_terms):
+#                     snippet = highlight_keywords(sent, query_terms)
+#                     break
+#             if not snippet:
+#                 snippet = highlight_keywords(content[:200], query_terms)
+#             results.append((page, score, snippet))
+
+#     # ترتيب النتائج حسب الوزن
+#     results.sort(key=lambda x: x[1], reverse=True)
+#     return results[:top_n]
+
+# vectorizer, tfidf_matrix = build_index(pages)
+
+
+# def normal_search(request,q):
+#     try:
+#         docs_search=[]
+#         query = str(q).split("%20")
+#         query=str(query)
+#         results = search_query(query, vectorizer, tfidf_matrix, pages)
+#         for i, (page, score, snippet) in enumerate(results, 1):
+#             if (score)>0.001:# and str(title).find(".txt") != -1:
+#                 if len(str(snippet).split(" "))>10:
+#                     snippet=str(snippet).split(" ")[0:20]
+#                 title=str(page['title']).replace(".txt","")
+#                 title="".join(title)
+#                 docs_search.append({"result":i, "score":score, "title":title,"file":page['title'],"snippet":" ".join(snippet)})
+#         return render(request, 'show_as_tree.html',{"docs_search":docs_search})
+#     except:
+#         return HttpResponse("لا يوجد نتائج..")
 
 def get_all_docs(request):
     docs=[]
