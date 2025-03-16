@@ -141,7 +141,14 @@
             <a href="https://parliament.up.railway.app/web/open/{{ i.file }}" class="read-more" style="display: block;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;margin: 0.5em 0;">قراءة التفاصيل</a>
         </article>
     {% endfor %}
-    {% for i in docs_search %}
+
+    السؤال: {{ smart_search.question }}
+    <br>
+    الجواب: {{ smart_search.answer }}
+    <br><br><br>
+    النص القانوني: {{ smart_search.context }}
+
+    {% for i in docs_normal_search %}
         <article class="legislation-card">
             <h3 style="display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;margin: 0.5em 0;height: 3em;line-height: 1.5em;">{{ i.title }}</h3>
             <p style="display: -webkit-box; -webkit-line-clamp: 2;-webkit-box-orient: vertical;overflow: hidden;font-size: 0.79em;margin: 0.5em 0; height: 3em; line-height: 1.5em;">{{ i.snippet }}...</p>

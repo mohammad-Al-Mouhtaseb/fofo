@@ -111,9 +111,15 @@
         }
     </style>
     <script>
-        function search(){
+        function normal_search(){
             x=document.getElementById("search-box").value;
-            window.location.replace("https://parliament.up.railway.app/web/search/"+x);
+            // window.location.replace("https://parliament.up.railway.app/web/normal_search/"+x);
+            window.location.replace("http://127.0.0.1:8000/web/normal_search/"+x);
+        }
+        function smart_search(){
+            x=document.getElementById("search-box").value;
+            // window.location.replace("https://parliament.up.railway.app/web/smart_search/"+x);
+            window.location.replace("http://127.0.0.1:8000/web/smart_search/"+x);
         }
     </script>
 </head>
@@ -136,47 +142,11 @@
 <section class="search-section">
     <h2>بحث سريع في القوانين والتشريعات</h2>
     <input type="text" id="search-box" class="search-input  " placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
-    <button class="search-btn" onclick="search()" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث</button>
+    <button class="search-btn" onclick="normal_search()" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث تقليدي</button>
+    <button class="search-btn" onclick="smart_search()" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث ذكي</button>
 </section>
 
-<main class="legislation-grid">
-    <article class="legislation-card">
-        <h3>المرسوم التشريعي رقم 21</h3>
-        <p>تعديل المادة 35 من قانون العمل</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
-    <article class="legislation-card">
-        <h3>المرسوم التشريعي رقم 21</h3>
-        <p>تعديل المادة 35 من قانون العمل</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
-    <article class="legislation-card">
-        <h3>المرسوم التشريعي رقم 21</h3>
-        <p>تعديل المادة 35 من قانون العمل</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
-    <article class="legislation-card">
-        <h3>المرسوم التشريعي رقم 21</h3>
-        <p>تعديل المادة 35 من قانون العمل</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
-    <article class="legislation-card">
-        <h3>المرسوم التشريعي رقم 21</h3>
-        <p>تعديل المادة 35 من قانون العمل</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
-    <article class="legislation-card">
-        <h3>قانون الجامعات</h3>
-        <p>إنشاء جامعة النموذج للدراسات المتخصصة</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
 
-    <article class="legislation-card">
-        <h3>نظام الانتخابات</h3>
-        <p>التعديلات الجديدة على قانون الانتخابات البرلمانية</p>
-        <a href="#" class="read-more">قراءة التفاصيل</a>
-    </article>
-</main>
 
 <footer>
     <div class="footer-content">
