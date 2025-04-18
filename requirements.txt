@@ -55,11 +55,11 @@ distro==1.9.0
 docarray==0.40.0
 filetype==1.2.0
 frozenlist==1.5.0
-google-ai-generativelanguage==0.6.16
-google-api-core==2.24.2
-google-auth==2.38.0
-google-generativeai==0.4.0
-googleapis-common-protos==1.69.1
+# google-ai-generativelanguage==0.6.16
+# google-api-core==2.24.2
+# google-auth==2.38.0
+# google-generativeai==0.4.0
+# googleapis-common-protos==1.69.1
 greenlet==3.1.1
 grpcio==1.71.0
 grpcio-status==1.63.0rc1
@@ -71,11 +71,11 @@ jiter==0.9.0
 jsonpatch==1.33
 jsonpointer==3.0.0
 langchain==0.3.20
-langchain-community==0.3.19
-langchain-core==0.3.45
-langchain-google-genai==2.1.0
-langchain-text-splitters==0.3.6
-langsmith==0.3.15
+# langchain-community==0.3.19
+# langchain-core==0.3.45
+# langchain-google-genai==2.1.0
+# langchain-text-splitters==0.3.6
+# langsmith==0.3.15
 markdown-it-py==3.0.0
 marshmallow==3.26.1
 mdurl==0.1.2
