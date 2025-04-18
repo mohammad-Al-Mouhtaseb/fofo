@@ -4,24 +4,16 @@ import re, requests, html, os
 from pathlib import Path
 from bs4 import BeautifulSoup
 from urllib.parse import unquote
+
 from langchain.schema.runnable import RunnableMap
-# import warnings
-
-
-# # from pydantic import ValidationError
-
-# # warnings.filterwarnings("ignore", category=UserWarning, module="pydantic._migration")
-# # set PYTHONWARNINGS="ignore"
-# # python -W ignore script.py
-
-from pydantic import ValidationError
 
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain.prompts import ChatPromptTemplate
 
-# from langchain.vectorstores import DocArrayInMemorySearch
-from langchain_community.vectorstores import DocArrayInMemorySearch
+from langchain.vectorstores import DocArrayInMemorySearch
+# from langchain_community.vectorstores import DocArrayInMemorySearch
+
 from langchain.schema.output_parser import StrOutputParser
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
@@ -46,6 +38,7 @@ os.environ["GOOGLE_API_KEY"] = API_KEY
 
 model = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest",temperature=0.4)#gemini-1.5-pro-001,gemini-1.5-pro-002,gemini-1.5-pro-latest
 embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 download_dir = os.path.join(BASE_DIR, 'static','downloaded_docs')
@@ -150,46 +143,46 @@ chunks=[elm for elm in texts]
 docs = [doc.page_content for doc in chunks]
 
 vectorstore = DocArrayInMemorySearch.from_texts(docs,embedding=embeddings)
-retriever = vectorstore.as_retriever()
+# retriever = vectorstore.as_retriever()
 
-template = """Answer the question in a full sentence, based only on the following context:{context}
-Question: {question}
-"""
-prompt = ChatPromptTemplate.from_template(template)
+# template = """Answer the question in a full sentence, based only on the following context:{context}
+# Question: {question}
+# """
+# prompt = ChatPromptTemplate.from_template(template)
 
-output_parser = StrOutputParser()
+# output_parser = StrOutputParser()
 
-chain = RunnableMap({
-    "context": lambda x: retriever.get_relevant_documents(x["question"]),
-    "question": lambda x: x["question"]
-}) | prompt | model | output_parser
+# chain = RunnableMap({
+#     "context": lambda x: retriever.get_relevant_documents(x["question"]),
+#     "question": lambda x: x["question"]
+# }) | prompt | model | output_parser
 
 
-def question_answering(user_question):
-    template = """أجب عن السؤال بجملة كاملة، بناءً على السياق التالي فقط:
-    {context}
+# def question_answering(user_question):
+#     template = """أجب عن السؤال بجملة كاملة، بناءً على السياق التالي فقط:
+#     {context}
 
-    سؤال: {question}
-    """
-    prompt = ChatPromptTemplate.from_template(template)
-    chain = RunnableMap({
-    "context": lambda x: retriever.get_relevant_documents(x["question"]),
-    "question": lambda x: x["question"]
-    }) | prompt | model | output_parser
-    answer = chain.invoke({"question": user_question })
-    context=retriever.get_relevant_documents(user_question)[0]
-    title="".join([page['title'] for page in pages if page['content'] ==context])
-    return {'question':user_question,'context':context,'answer':answer,'title':title}
+#     سؤال: {question}
+#     """
+#     prompt = ChatPromptTemplate.from_template(template)
+#     chain = RunnableMap({
+#     "context": lambda x: retriever.get_relevant_documents(x["question"]),
+#     "question": lambda x: x["question"]
+#     }) | prompt | model | output_parser
+#     answer = chain.invoke({"question": user_question })
+#     context=retriever.get_relevant_documents(user_question)[0]
+#     title="".join([page['title'] for page in pages if page['content'] ==context])
+#     return {'question':user_question,'context':context,'answer':answer,'title':title}
 
-def smart_search(request,q):
-    try:
-        docs_search=[]
-        query = str(q).split("%20")
-        query=str(query)
-        result = question_answering(query)
-        return render(request, 'show_as_tree.html',{"docs_search":result})
-    except:
-        return HttpResponse("لا يوجد نتائج..")
+# def smart_search(request,q):
+#     try:
+#         docs_search=[]
+#         query = str(q).split("%20")
+#         query=str(query)
+#         result = question_answering(query)
+#         return render(request, 'show_as_tree.html',{"docs_search":result})
+#     except:
+#         return HttpResponse("لا يوجد نتائج..")
 
 
 def get_all_docs(request):
@@ -342,37 +335,3 @@ def constitution(request):
 #         return render(request, 'show_as_tree.html',{"docs_search":docs_search})
 #     except:
 #         return HttpResponse("لا يوجد نتائج..")
-
-def get_all_docs(request):
-    docs=[]
-    for file in os.listdir(download_dir):
-        file_path = os.path.join(download_dir, file)
-        if os.path.isfile(file_path):
-            if file_path.find(".txt")>0:
-                with open(file_path, 'rb') as tmp_file:
-                    content = tmp_file.read().decode('utf-8', errors='replace')
-                    content=str(content).split(" ")[0:20]
-                    content=" ".join(content)
-                    title=str(file).replace(".txt","")
-                    title="".join(title)
-                docs.append({"file":file,"content":content, "title":title})
-    return render(request, 'show_as_tree.html',{"docs":docs})
-
-def open_file(request,file_name):
-    file_path=os.path.join(download_dir, file_name)
-    try:
-        with open(file_path, 'rb') as tmp_file:
-            content = tmp_file.read().decode('utf-8', errors='replace')
-            content = str(content)
-            content = content.replace(".",".<br>")
-            content = content.replace(":",":<br>")
-            content = content.replace("بشار الأسد","")#ساقط ساقط يا حمار
-            content = "".join(content)
-            content = content.split("<br>")
-            content = [s for s in content if s.strip() and s.strip() != "."]
-            return render(request, 'law_page.html',{"content":content})
-    except:
-        return HttpResponse("الملف غير موجود!")
-
-def constitution(request):
-        return render(request, 'constitution.html')
