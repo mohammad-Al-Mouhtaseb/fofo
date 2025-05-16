@@ -6,7 +6,7 @@ class CustomUser(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
         fields = ['groups','email','name','father_name','mother_name','phone_number','gender','governorate','category','description',
                   'electoral_program','token','is_active','is_superuser','is_staff','photo','no_judgment','id_image_front',
-                  'id_image_back','residence_permit','is_accepted','password','video','essay',
+                  'id_image_back','residence_permit','is_accepted','password','video_name','video','essay_name','essay',
                 'education','acadime_digree']
         if  request.user.groups.filter(name='Admin').exists():
             pass

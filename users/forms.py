@@ -6,8 +6,8 @@ class reg_form(forms.ModelForm):
     class Meta:
         model = User
         fields = ['password','email','name','father_name','mother_name','gender','birth','photo','governorate','category','description',
-                'electoral_program','no_judgment','id_image_front','id_image_back','residence_permit','phone_number','video','essay',
-                'education','acadime_digree']
+                'electoral_program','no_judgment','id_image_front','id_image_back','residence_permit','phone_number','video_name','video',
+                'essay_name','essay','education','acadime_digree']
         widgets = {
             'password': forms.TextInput(attrs={'maxlength': '128', 'required': True, 'id': 'id_password'}),
             'email': forms.EmailInput(attrs={'maxlength': '254', 'required': True, 'id': 'id_email'}),
@@ -18,8 +18,11 @@ class reg_form(forms.ModelForm):
             'birth': forms.TextInput(attrs={'value': '2000-1-1', 'required': True, 'id': 'id_birth'}),
             'photo': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_photo'}),
             
+            'video_name': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_video_name'}),
+
             'video': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_video'}),
             
+            'essay_name': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_essay_name'}),
             'essay': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_essay'}),
 
             'education': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_education'}),
