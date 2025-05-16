@@ -20,10 +20,11 @@ class reg_form(forms.ModelForm):
             
             'video_name': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_video_name'}),
 
-            'video': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_video'}),
+            'video': forms.FileInput(attrs={'accept': 'video/*', 'required': True, 'id': 'id_video'}),
             
             'essay_name': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_essay_name'}),
-            'essay': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_essay'}),
+
+            'essay': forms.FileInput(attrs={'accept': 'pdfs/*', 'required': True, 'id': 'id_essay'}),
 
             'education': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_education'}),
 
