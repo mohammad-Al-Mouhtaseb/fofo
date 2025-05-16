@@ -404,6 +404,6 @@ def get_accepted(request):
                     'id_image_back':str('https://parliament.up.railway.app/'+str(i.id_image_back)),
                     'residence_permit':str('https://parliament.up.railway.app/'+str(i.residence_permit))
                     ,'phone_number':i.phone_number,'video_name':i.video_name,'video':str('https://parliament.up.railway.app/'+str(i.video)),
-                    'essay_name':i.essay_name,'essay':i.essay,'education':i.education,'acadime_digree':i.acadime_digree})
+                    'essay_name':i.essay_name,'essay':str('https://parliament.up.railway.app/'+str(i.essay)),'education':i.education,'acadime_digree':i.acadime_digree})
 
     return JsonResponse({'accepted':res}, status=200)
