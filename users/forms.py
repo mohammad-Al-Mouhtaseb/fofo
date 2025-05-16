@@ -80,6 +80,12 @@ class reg_form(forms.ModelForm):
             new_video_name = f"video_{user_name}{file_extension}"
             instance.video.name = new_video_name
 
+        if self.cleaned_data['essay']:
+            user_name = self.cleaned_data['email']
+            file_extension = os.path.splitext(self.cleaned_data['essay'].name)[1]
+            new_essay_name = f"essay_{user_name}{file_extension}"
+            instance.essay.name = new_essay_name
+
         if commit:
             instance.save()
         return instance
