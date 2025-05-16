@@ -9,8 +9,8 @@
     <title>مجلس الشعب السوري</title>
     <style>
         :root {
-            --primary-color: #7b181b;
-            --secondary-color: #E3E3E3;
+            --primary-color: #166d2f;
+            --secondary-color: #fff;
             --text-color: #2c3e50;
         }
 
@@ -27,37 +27,41 @@
         }
 
         /* Header Styles */
-        .header {
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.01)), 
-                        url({% static 'index/files/index_background.png' %}) center/cover;
-            height: 160px;
-            padding: 20px;
+        .header {   
             position: relative;
+            display: flex;
         }
 
         .logo {
             float: right;
-            max-width: 200px;
-            height: auto;
+            width: 130px;
+            margin: 5px;
         }
 
         /* Navigation */
         .main-nav {
             background: var(--primary-color);
             padding: 0.5rem;
+            height: 60px;
+            margin: auto;
+            margin-top: 0;
+            width: 100%;
         }
 
         .footer-content{
-            /* background: var(--primary-color); */
-            /* padding-bottom: 36px; */
             text-align: center;
             color: #444;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
         }
 
         .nav-list {
             list-style: none;
             display: flex;
             justify-content: space-around;
+            align-items: center;
         }
 
         .nav-item {
@@ -66,11 +70,13 @@
             padding: 0.5rem 1rem;
             transition: all 0.3s;
             text-decoration: none;
+            font-size: large;
         }
 
         /* Search Section */
         .search-section {
-            padding: 1rem;
+            /* padding: 1rem; */
+            margin-top: -50px;
             background: var(--secondary-color);
             text-align: center;
         }
@@ -126,24 +132,24 @@
 <body>
 
 <header class="header">
-    <img src="{% static 'index/files/syr.png' %}" alt="شعار مجلس الشعب السوري" class="logo" width="135">
+    <img src="{% static 'index/files/syr.png' %}" alt="شعار مجلس الشعب السوري" class="logo" >
+    <nav class="main-nav">
+        <ul class="nav-list">
+            <a href="https://parliament.up.railway.app" style="text-decoration: none; color: #fff;"><li class="nav-item">الصفحة الرئيسية</li></a>
+            <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">عن المجلس والأعضاء</li></a>
+            <a href="https://parliament.up.railway.app/web/constitution" style="text-decoration: none; color: #fff;"><li class="nav-item">الدستور السوري</li></a>
+            <a href="https://parliament.up.railway.app/web/get_all" style="text-decoration: none; color: #fff;"><li class="nav-item">القوانين والتشريعات</li></a>
+            <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الترشح والانتخابات</li></a>
+        </ul>
+    </nav>
 </header>
 
-<nav class="main-nav">
-    <ul class="nav-list">
-        <a href="https://parliament.up.railway.app" style="text-decoration: none; color: #fff;"><li class="nav-item">الصفحة الرئيسية</li></a>
-        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">عن المجلس والأعضاء</li></a>
-        <a href="https://parliament.up.railway.app/web/constitution" style="text-decoration: none; color: #fff;"><li class="nav-item">الدستور السوري</li></a>
-        <a href="https://parliament.up.railway.app/web/get_all" style="text-decoration: none; color: #fff;"><li class="nav-item">القوانين والتشريعات</li></a>
-        <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الترشح والانتخابات</li></a>
-    </ul>
-</nav>
+
 
 <section class="search-section">
     <h2>بحث سريع في القوانين والتشريعات</h2>
     <input type="text" id="search-box" class="search-input  " placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
-    <button class="search-btn" onclick="normal_search()" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث تقليدي</button>
-    <button class="search-btn" onclick="smart_search()" style="height: 36px;width: 36px;border: 2px solid #7b181b; border-radius: 20%;">بحث ذكي</button>
+    <button class="search-btn" onclick="normal_search()" style="height: 36px;width: 36px;border: 2px solid #166d2f  ; border-radius: 20%;">بحث</button>
 </section>
 
 

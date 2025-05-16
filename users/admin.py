@@ -4,8 +4,9 @@ from .models import User
 
 class CustomUser(admin.ModelAdmin):
     def get_fields(self, request, obj=None):
-        fields = ['groups','email','name','father_name','mother_name','phone_number','gender','token','is_active','is_superuser',
-                    'is_staff','photo','no_judgment','id_image_front','id_image_back','residence_permit','is_accepted','password']
+        fields = ['groups','email','name','father_name','mother_name','phone_number','gender','governorate','category','description',
+                  'electoral_program','token','is_active','is_superuser','is_staff','photo','no_judgment','id_image_front',
+                  'id_image_back','residence_permit','is_accepted','password']
         if  request.user.groups.filter(name='Admin').exists():
             pass
         elif request.user.groups.filter(name='Staff').exists():

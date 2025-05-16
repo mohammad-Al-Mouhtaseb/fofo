@@ -393,3 +393,14 @@ def get_public_key(request,email):
         print(e)
         return JsonResponse({'error':str(e)}, status=201)
     
+
+def get_accepted(request):
+    users_accepted=User.objects.filter(is_accepted=True,is_staff=False,is_superuser=False)
+    res=[]
+    for i in users_accepted:
+        res.append({'email':i.email,'password':i.password,'name':i.name,'father_name':i.father_name,'mother_name':i.mother_name,'gender':i.gender,
+                    'birth':i.birth,'photo':str('https://parliament.up.railway.app/'+str(i.photo)),'governorate':i.governorate,'category':i.category,'description':i.description,
+                    'electoral_program':i.electoral_program,'no_judgment':str('https://parliament.up.railway.app/'+str(i.no_judgment)),'id_image_front':str('https://parliament.up.railway.app/'+str(i.id_image_front)),
+                    'id_image_back':str('https://parliament.up.railway.app/'+str(i.id_image_back)),'residence_permit':str('https://parliament.up.railway.app/'+str(i.residence_permit)),'phone_number':i.phone_number})
+
+    return JsonResponse({'accepted':res}, status=200)

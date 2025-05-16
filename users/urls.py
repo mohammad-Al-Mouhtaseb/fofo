@@ -9,6 +9,9 @@ urlpatterns = [
     path('login_form',views.login_form,name='login_form'),
     path('logout',views.logout,name='logout'),
     path('auth/<str:email>/<str:token>',views.auth,name='auth'),
+    
+    path('get_accepted',views.get_accepted,name='get_accepted'),
+
     # path('edit',views.edit,name='edit'),
     # path('photo/<str:text>',views.photo,name='photo'),
     # path('photos/<str:text>',views.photo,name='photo'),

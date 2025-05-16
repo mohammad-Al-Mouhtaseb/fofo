@@ -71,13 +71,16 @@
         <h1>طلب الترشح لانتخابات مجلس الشعب السوري</h1>
         <form method="post" enctype="multipart/form-data">
             <input type="hidden" name="csrfmiddlewaretoken" value="rTMOorc177bcebSHoggaqPJNYVBJDtbWZx0iwzoT9q5E5PhQWJo4wULlo2FwCaXI">
+            
+            <label>رقم الهاتف</label>
+            <input type="tel" name="phone_number" required id="id_phone_number">
 
             <label>البريد الإلكتروني</label>
             <input type="email" name="email" required id="id_email">
 
             <label>كلمة المرور</label>
             <input type="password" name="password" required id="id_password">
-
+            
             <label>الاسم الكامل</label>
             <input type="text" name="name" required id="id_name">
 
@@ -96,6 +99,38 @@
             <label>تاريخ الميلاد</label>
             <input type="date" name="birth" required id="id_birth">
 
+            <label>المحافظة</label>
+            <select name="governorate" id="id_governorate">
+                <option value="دمشق" selected>دمشق</option>
+                <option value="حلب">حلب</option>
+                <option value="إدلب">إدلب</option>
+                <option value="اللاذقية">اللاذقية</option>
+                <option value="طرطوس">طرطوس</option>
+                <option value="بانياس">بانياس</option>
+                <option value="حماة">حماة</option>
+                <option value="حمص">حمص</option>
+                <option value="الحسكة">الحسكة</option>
+                <option value="الرقة">الرقة</option>
+                <option value="القامشلي">القامشلي</option>
+                <option value="القامشلي">القامشلي</option>
+                <option value="درعا">درعا</option>
+                <option value="السويداء">السويداء</option>
+                <option value="القنيطرة">القنيطرة</option>
+            </select>
+
+            <label>الفئة</label>
+            <select name="category" id="id_category">
+                <option value="مستقل - فئة - أ" selected>مستقل - فئة - أ</option>
+                <option value="مستقل - فئة - ب">مستقل - فئة - ب</option>
+                <option value="حزبي">حزبي</option>
+            </select>
+
+            <label>البرنامج الانتخابي</label>
+            <input type="text" name="description" required id="id_description">
+
+            <label>نبذة</label>
+            <input type="text" name="electoral_program" required id="id_electoral_program">
+
             <label>الصورة الشخصية</label>
             <input type="file" name="photo" accept="image/*" required id="id_photo">
 
@@ -110,9 +145,6 @@
 
             <label>سند اقامة</label>
             <input type="file" name="residence_permit" accept="image/*" required id="id_residence_permit">
-
-            <label>رقم الهاتف</label>
-            <input type="tel" name="phone_number" required id="id_phone_number">
 
             <button type="submit" class="submit-btn">تقديم الطلب</button>
         </form>

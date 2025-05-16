@@ -32,6 +32,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     gender=models.CharField(max_length=5,choices=[("m", "m"),("f", "f")],default='m')
     birth=models.DateField(default='2000-1-1')
     photo=models.ImageField(upload_to='users/photos/', default='users/photos/default.png',null=True)
+
+    governorate=models.CharField(max_length=25,choices=[("دمشق", "دمشق"),("حلب", "حلب"),("إدلب", "إدلب"),("اللاذقية", "اللاذقية"),
+                                                         ("طرطوس", "طرطوس"),("بانياس", "بانياس"),("حماة", "حماة"),("حمص", "حمص"),
+                                                         ("الحسكة", "الحسكة"),("الرقة", "الرقة"),("القامشلي", "القامشلي"),("درعا", "درعا"),
+                                                         ("السويداء", "السويداء"),("القنيطرة", "القنيطرة")],default='دمشق', null=False, blank=False)
+    
+    category=models.CharField(max_length=25,choices=[("مستقل - فئة - أ", "مستقل - فئة - أ"),("مستقل - فئة - ب", "مستقل - فئة - ب"),("حزبي", "حزبي")],default="مستقل - فئة - أ", null=False, blank=False)
+
+    description=models.CharField(max_length=255)
+
+    electoral_program=models.CharField(max_length=255)
+
     token=models.CharField(max_length=65,default='',null=True)
     is_active = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

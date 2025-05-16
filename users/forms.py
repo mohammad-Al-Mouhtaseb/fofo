@@ -5,8 +5,8 @@ import os
 class reg_form(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['password','email','name','father_name','mother_name','gender','birth','photo','no_judgment','id_image_front'
-                   ,'id_image_back','residence_permit','phone_number']
+        fields = ['password','email','name','father_name','mother_name','gender','birth','photo','governorate','category','description',
+                'electoral_program','no_judgment','id_image_front','id_image_back','residence_permit','phone_number']
         widgets = {
             'password': forms.TextInput(attrs={'maxlength': '128', 'required': True, 'id': 'id_password'}),
             'email': forms.EmailInput(attrs={'maxlength': '254', 'required': True, 'id': 'id_email'}),
@@ -16,6 +16,12 @@ class reg_form(forms.ModelForm):
             'gender': forms.Select(attrs={'id': 'id_gender'}),
             'birth': forms.TextInput(attrs={'value': '2000-1-1', 'required': True, 'id': 'id_birth'}),
             'photo': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_photo'}),
+
+            'governorate': forms.Select(attrs={'id': 'id_governorate'}),
+            'category': forms.Select(attrs={'id': 'id_category'}),
+            'description': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_description'}),
+            'electoral_program': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_electoral_program'}),
+
             'no_judgment': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_no_judgment'}),
             'id_image_front': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_id_image_front'}),
             'id_image_back': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_id_image_back'}),
