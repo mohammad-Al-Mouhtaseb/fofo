@@ -57,8 +57,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_accepted = models.BooleanField(default=False)  
     objects = CustomUserManager()  
     
-    video=models.ImageField(upload_to='users/videos/',null=True, blank=False)
-    
+    video=models.FileField(upload_to='users/videos/',null=True, blank=False)
+
     essay=models.CharField(max_length=255)
     
     education=models.CharField(max_length=255)
