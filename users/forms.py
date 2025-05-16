@@ -6,7 +6,8 @@ class reg_form(forms.ModelForm):
     class Meta:
         model = User
         fields = ['password','email','name','father_name','mother_name','gender','birth','photo','governorate','category','description',
-                'electoral_program','no_judgment','id_image_front','id_image_back','residence_permit','phone_number']
+                'electoral_program','no_judgment','id_image_front','id_image_back','residence_permit','phone_number','video','essay',
+                'education','acadime_digree']
         widgets = {
             'password': forms.TextInput(attrs={'maxlength': '128', 'required': True, 'id': 'id_password'}),
             'email': forms.EmailInput(attrs={'maxlength': '254', 'required': True, 'id': 'id_email'}),
@@ -16,6 +17,14 @@ class reg_form(forms.ModelForm):
             'gender': forms.Select(attrs={'id': 'id_gender'}),
             'birth': forms.TextInput(attrs={'value': '2000-1-1', 'required': True, 'id': 'id_birth'}),
             'photo': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_photo'}),
+            
+            'video': forms.FileInput(attrs={'accept': 'image/*', 'required': True, 'id': 'id_video'}),
+            
+            'essay': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_essay'}),
+
+            'education': forms.TextInput(attrs={'maxlength': '255', 'required': True, 'id': 'id_education'}),
+
+            'acadime_digree': forms.Select(attrs={'id': 'id_acadime_digree'}),
 
             'governorate': forms.Select(attrs={'id': 'id_governorate'}),
             'category': forms.Select(attrs={'id': 'id_category'}),
@@ -60,6 +69,12 @@ class reg_form(forms.ModelForm):
             file_extension = os.path.splitext(self.cleaned_data['residence_permit'].name)[1]
             new_residence_permit_name = f"residence_permit_{user_name}{file_extension}"
             instance.residence_permit.name = new_residence_permit_name
+
+        if self.cleaned_data['video']:
+            user_name = self.cleaned_data['email']
+            file_extension = os.path.splitext(self.cleaned_data['video'].name)[1]
+            new_video_name = f"video_{user_name}{file_extension}"
+            instance.video.name = new_video_name
 
         if commit:
             instance.save()

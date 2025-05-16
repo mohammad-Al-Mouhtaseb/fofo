@@ -56,6 +56,18 @@ class User(AbstractBaseUser, PermissionsMixin):
     phone_number=models.CharField(max_length=15)
     is_accepted = models.BooleanField(default=False)  
     objects = CustomUserManager()  
+    
+    video=models.ImageField(upload_to='users/videos/',null=True, blank=False)
+    
+    essay=models.CharField(max_length=255)
+    
+    education=models.CharField(max_length=255)
+
+    acadime_digree=models.CharField(max_length=25,choices=[("بكالوريوس", "بكالوريوس"),("ماجستير","ماجستير"),("دكتوراه", "دكتوراه"),
+                                                           ("دبلوم", "دبلوم"),("دبلوم عالي", "دبلوم عالي"),("زمالة", "زمالة"),
+                                                           ("ثانوية عامة", "ثانوية عامة"),("غير ذلك", "غير ذلك")]
+                                                           ,default="غير ذلك", null=False, blank=False)
+
     # public_key=models.TextField(max_length=1200,default='',null=True, blank=True)
     # private_key=models.TextField(max_length=1200,default='',null=True, blank=True)
 
