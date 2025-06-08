@@ -1,7 +1,7 @@
-# from django.shortcuts import render
-# from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseForbidden
-# import re, requests, html, os
-# from pathlib import Path
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseForbidden
+import re, requests, html, os
+from pathlib import Path
 # from bs4 import BeautifulSoup
 # from urllib.parse import unquote
 
@@ -216,8 +216,8 @@
 #     except:
 #         return HttpResponse("الملف غير موجود!")
 
-# def constitution(request):
-#         return render(request, 'constitution.html')
+def constitution(request):
+        return render(request, 'constitution.html')
 
 
 # # ######################################

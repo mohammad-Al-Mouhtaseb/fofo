@@ -6,5 +6,9 @@ urlpatterns = [
     # path('smart_search/<str:q>',views.smart_search,name='smart_search'),
     # path('get_all',views.get_all_docs,name='get_all_docs'),
     # path('open/<str:file_name>',views.open_file,name='open_file'),
-    # path('constitution',views.constitution,name='constitution'),
+    path('constitution',views.constitution,name='constitution'),
 ]
+
+
+# pg_dump -h roundhouse.proxy.rlwy.net -d railway -U postgres -p 46180 -W -F t > database_backup.dump
+# pg_restore -U postgres -h roundhouse.proxy.rlwy.net -p 46180 -W -F t -d railway database_backup.dump
