@@ -11,9 +11,10 @@ from langchain.schema.runnable import RunnableMap
 import qalsadi.lemmatizer
 
 
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
-# from langchain_google_genai import ChatGoogleGenerativeAI
-# from langchain_google_genai import GoogleGenerativeAIEmbeddings
+
+
 from langchain.prompts import ChatPromptTemplate
 
 # from langchain.vectorstores import DocArrayInMemorySearch
@@ -319,7 +320,6 @@ hybrid_retriever = HybridRetriever(retriever1=traditional_retriever, retriever2=
 
 
 
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
 
 
 
