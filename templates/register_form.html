@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ar">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,25 +18,31 @@
             justify-content: center;
             align-items: center;
         }
+
         .container {
-            max-width: 600px;
+            max-width: 800px;
+            width: 70%;
             background: #fff;
             padding: 20px;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             text-align: center;
         }
+
         h1 {
             color: #333;
             margin-bottom: 20px;
         }
+
         label {
             font-weight: bold;
             text-align: right;
             margin-top: 10px;
             display: block;
         }
-        input, select {
+
+        input,
+        select {
             padding: 10px;
             margin-top: 5px;
             border: 1px solid #ccc;
@@ -43,13 +50,16 @@
             font-size: 16px;
             width: 80%;
         }
-        select{
+
+        select {
             width: 85%;
         }
+
         input[type="file"] {
             padding: 5px;
             background: #f9f9f9;
         }
+
         .submit-btn {
             margin-top: 15px;
             background-color: #007bff;
@@ -61,123 +71,185 @@
             border-radius: 6px;
             transition: background-color 0.3s;
         }
+
         .submit-btn:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h1>طلب الترشح لانتخابات مجلس الشعب السوري</h1>
         <form method="post" enctype="multipart/form-data">
-            <input type="hidden" name="csrfmiddlewaretoken" value="rTMOorc177bcebSHoggaqPJNYVBJDtbWZx0iwzoT9q5E5PhQWJo4wULlo2FwCaXI">
-            
-            <label>رقم الهاتف</label>
-            <input type="tel" name="phone_number" required id="id_phone_number">
-
-            <label>البريد الإلكتروني</label>
-            <input type="email" name="email" required id="id_email">
-
-            <label>كلمة المرور</label>
-            <input type="password" name="password" required id="id_password">
-            
-            <label>الاسم الكامل</label>
-            <input type="text" name="name" required id="id_name">
-
-            <label>اسم الأب</label>
-            <input type="text" name="father_name" required id="id_father_name">
-
-            <label>اسم الأم</label>
-            <input type="text" name="mother_name" required id="id_mother_name">
-
-            <label>الجنس</label>
-            <select name="gender" id="id_gender">
-                <option value="m" selected>ذكر</option>
-                <option value="f">أنثى</option>
-            </select>
-
-            <label>تاريخ الميلاد</label>
-            <input type="date" name="birth" required id="id_birth">
-
-            <label>المحافظة</label>
-            <select name="governorate" id="id_governorate">
-                <option value="دمشق" selected>دمشق</option>
-                <option value="حلب">حلب</option>
-                <option value="إدلب">إدلب</option>
-                <option value="اللاذقية">اللاذقية</option>
-                <option value="طرطوس">طرطوس</option>
-                <option value="بانياس">بانياس</option>
-                <option value="حماة">حماة</option>
-                <option value="حمص">حمص</option>
-                <option value="الحسكة">الحسكة</option>
-                <option value="الرقة">الرقة</option>
-                <option value="القامشلي">القامشلي</option>
-                <option value="القامشلي">القامشلي</option>
-                <option value="درعا">درعا</option>
-                <option value="السويداء">السويداء</option>
-                <option value="القنيطرة">القنيطرة</option>
-            </select>
-
-            <label>الفئة</label>
-            <select name="category" id="id_category">
-                <option value="مستقل - فئة - أ" selected>مستقل - فئة - أ</option>
-                <option value="مستقل - فئة - ب">مستقل - فئة - ب</option>
-                <option value="حزبي">حزبي</option>
-            </select>
-
-            <label>البرنامج الانتخابي</label>
-            <input type="text" name="description" required id="id_description">
-
-            <label>نبذة</label>
-            <input type="text" name="electoral_program" required id="id_electoral_program">
-
-            <label>الصورة الشخصية</label>
-            <input type="file" name="photo" accept="image/*" required id="id_photo">
-
-            <label>وثيقة غير محكوم</label>
-            <input type="file" name="no_judgment" accept="image/*" required id="id_no_judgment">
-
-            <label>صورة الهوية (الوجه الأمامي)</label>
-            <input type="file" name="id_image_front" accept="image/*" required id="id_id_image_front">
-
-            <label>صورة الهوية (الوجه الخلفي)</label>
-            <input type="file" name="id_image_back" accept="image/*" required id="id_id_image_back">
-
-            <label>سند اقامة</label>
-            <input type="file" name="residence_permit" accept="image/*" required id="id_residence_permit">
-
-            
-            <label>إسم فيديو</label>
-            <input type="text" name="video_name" required id="id_video_name">
-
-            <label>فيديو</label>
-            <input type="file" name="video" accept="video/*" required id="id_video">
+            <input type="hidden" name="csrfmiddlewaretoken"
+                value="rTMOorc177bcebSHoggaqPJNYVBJDtbWZx0iwzoT9q5E5PhQWJo4wULlo2FwCaXI">
+            <table style="width: 100%;">
+                <tr>
+                    <td>
 
 
-            
-            <label>إسم مقالة</label>
-            <input type="text" name="essay_name" required id="id_essay_name">
+                        <label>كلمة المرور</label>
+                        <input type="password" name="password" required id="id_password">
 
-            <label>مقالة</label>
-            <input type="file" name="essay" accept="pdfs/*" required id="id_essay">
+                    </td>
+                    <td>
+                        <label>البريد الإلكتروني</label>
+                        <input type="email" name="email" required id="id_email">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
 
-            <label>التعليم</label>
-            <input type="text" name="education" required id="id_education">
-                                                           
-            <label>الدرجة العلمية</label>
-            <select name="acadime_digree" id="id_acadime_digree">
-                <option value="بكالوريوس" selected>بكالوريوس</option>
-                <option value="ماجستير" selected>ماجستير</option>
-                <option value="دكتوراه" selected>دكتوراه</option>
-                <option value="دبلوم" selected>دبلوم</option>
-                <option value="دبلوم عالي" selected>دبلوم عالي</option>
-                <option value="زمالة" selected>زمالة</option>
-                <option value="ثانوية عامة" selected>ثانوية عامة</option>
-                <option value="غير ذلك" selected>غير ذلك</option>
-            </select>
 
+                        <label>رقم الهاتف</label>
+                        <input type="tel" name="phone_number" required id="id_phone_number">
+                    </td>
+                    <td>
+                        <label>الاسم الكامل</label>
+                        <input type="text" name="name" required id="id_name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>اسم الأب</label>
+                        <input type="text" name="father_name" required id="id_father_name">
+                    </td>
+                    <td>
+                        <label>اسم الأم</label>
+                        <input type="text" name="mother_name" required id="id_mother_name">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>الجنس</label>
+                        <select name="gender" id="id_gender">
+                            <option value="m" selected>ذكر</option>
+                            <option value="f">أنثى</option>
+                        </select>
+                    </td>
+                    <td>
+                        <label>تاريخ الميلاد</label>
+                        <input type="date" name="birth" required id="id_birth">
+                    </td>
+
+                </tr>
+                <tr>
+                    <td style="width: 50%;">
+                        <label>المحافظة</label>
+                        <select name="governorate" id="id_governorate">
+                            <option value="دمشق" selected>دمشق</option>
+                            <option value="حلب">حلب</option>
+                            <option value="إدلب">إدلب</option>
+                            <option value="اللاذقية">اللاذقية</option>
+                            <option value="طرطوس">طرطوس</option>
+                            <option value="بانياس">بانياس</option>
+                            <option value="حماة">حماة</option>
+                            <option value="حمص">حمص</option>
+                            <option value="الحسكة">الحسكة</option>
+                            <option value="الرقة">الرقة</option>
+                            <option value="القامشلي">القامشلي</option>
+                            <option value="القامشلي">القامشلي</option>
+                            <option value="درعا">درعا</option>
+                            <option value="السويداء">السويداء</option>
+                            <option value="القنيطرة">القنيطرة</option>
+                        </select>
+                    </td>
+                    <td>
+
+                        <label>الفئة</label>
+                        <select name="category" id="id_category">
+                            <option value="مستقل - فئة - أ" selected>مستقل - فئة - أ</option>
+                            <option value="مستقل - فئة - ب">مستقل - فئة - ب</option>
+                            <option value="حزبي">حزبي</option>
+                        </select>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <label>البرنامج الانتخابي</label>
+                        <input type="text" name="description" required id="id_description" style="width: 90%;">
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                        <label>الصورة الشخصية</label>
+                        <input type="file" name="photo" accept="image/*" required id="id_photo">
+                    </td>
+                    <td>
+                        <label>نبذة</label>
+                        <input type="text" name="electoral_program" required id="id_electoral_program">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>صورة الهوية (الوجه الخلفي)</label>
+                        <input type="file" name="id_image_back" accept="image/*" required id="id_id_image_back">
+                    </td>
+                    <td>
+                        <label>صورة الهوية (الوجه الأمامي)</label>
+                        <input type="file" name="id_image_front" accept="image/*" required id="id_id_image_front">
+                    </td>
+                </tr>
+                <tr>
+                    
+                    <td>
+                        <label>وثيقة غير محكوم</label>
+                        <input type="file" name="no_judgment" accept="image/*" required id="id_no_judgment">
+                    </td>
+                    <td>
+                        <label>سند اقامة</label>
+                        <input type="file" name="residence_permit" accept="image/*" required id="id_residence_permit">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <label>إسم فيديو(نبذة)</label>
+                        <input type="text" name="video_name" required id="id_video_name">
+                    </td>
+                    <td>
+                        <label>فيديو</label>
+                        <input type="file" name="video" accept="video/*" required id="id_video">
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+
+                        <label>إسم مقالة(نبذة)</label>
+                        <input type="text" name="essay_name" required id="id_essay_name">
+                    </td>
+                    <td>
+                        <label>مقالة</label>
+                        <input type="file" name="essay" accept="pdfs/*" required id="id_essay">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>التعليم</label>
+                        <input type="text" name="education" required id="id_education">
+                    </td>
+                    <td>
+                        <label>الدرجة العلمية</label>
+                        <select name="acadime_digree" id="id_acadime_digree">
+                            <option value="بكالوريوس" selected>بكالوريوس</option>
+                            <option value="ماجستير" selected>ماجستير</option>
+                            <option value="دكتوراه" selected>دكتوراه</option>
+                            <option value="دبلوم" selected>دبلوم</option>
+                            <option value="دبلوم عالي" selected>دبلوم عالي</option>
+                            <option value="زمالة" selected>زمالة</option>
+                            <option value="ثانوية عامة" selected>ثانوية عامة</option>
+                            <option value="غير ذلك" selected>غير ذلك</option>
+                        </select>
+                </tr>
+            </table>
             <button type="submit" class="submit-btn">تقديم الطلب</button>
         </form>
     </div>
 </body>
+
 </html>

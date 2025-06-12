@@ -3,13 +3,18 @@ from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseFo
 import re, requests, html, os
 from pathlib import Path
 # from bs4 import BeautifulSoup
-# from urllib.parse import unquote
+from urllib.parse import unquote
 
-# from langchain.schema.runnable import RunnableMap
+from langchain.schema.runnable import RunnableMap
+
+
+import qalsadi.lemmatizer
+
+
 
 # from langchain_google_genai import ChatGoogleGenerativeAI
 # from langchain_google_genai import GoogleGenerativeAIEmbeddings
-# from langchain.prompts import ChatPromptTemplate
+from langchain.prompts import ChatPromptTemplate
 
 # from langchain.vectorstores import DocArrayInMemorySearch
 # # from langchain_community.vectorstores import DocArrayInMemorySearch
@@ -17,34 +22,34 @@ from pathlib import Path
 # from langchain.schema.output_parser import StrOutputParser
 # from langchain.text_splitter import RecursiveCharacterTextSplitter
 
-# import google.generativeai as genai
+import google.generativeai as genai
 
 # # from sklearn.feature_extraction.text import TfidfVectorizer,CountVectorizer
-# # from nltk.corpus import stopwords
-# # import nltk
-# # from pyarabic import araby
-# # nltk.download('stopwords', quiet=True)
-# # from nltk.stem.isri import ISRIStemmer
-# # nltk.download('punkt')
-# # nltk.download('punkt_tab')
+from nltk.corpus import stopwords
+import nltk
+from pyarabic import araby
+nltk.download('stopwords', quiet=True)
+from nltk.stem.isri import ISRIStemmer
+nltk.download('punkt')
+nltk.download('punkt_tab')
 
-# # arabic_stopwords = set(stopwords.words('arabic'))
-
-
-# API_KEY = "AIzaSyCnaJnmBKGH-KLMzAqSqqTFcUnuQpCNatc"
-
-# genai.configure(api_key=API_KEY)
-# os.environ["GOOGLE_API_KEY"] = API_KEY
-
-# model = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest",temperature=0.4)#gemini-1.5-pro-001,gemini-1.5-pro-002,gemini-1.5-pro-latest
-# embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+# arabic_stopwords = set(stopwords.words('arabic'))
 
 
-# BASE_DIR = Path(__file__).resolve().parent.parent
-# download_dir = os.path.join(BASE_DIR, 'static','downloaded_docs')
-# os.makedirs(download_dir, exist_ok=True)
+API_KEY = "AIzaSyCnaJnmBKGH-KLMzAqSqqTFcUnuQpCNatc"
 
-# pages = []
+genai.configure(api_key=API_KEY)
+os.environ["GOOGLE_API_KEY"] = API_KEY
+
+model = ChatGoogleGenerativeAI(model="gemini-1.5-pro-latest",temperature=0.4)#gemini-1.5-pro-001,gemini-1.5-pro-002,gemini-1.5-pro-latest
+embeddings = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+download_dir = os.path.join(BASE_DIR, 'static','downloaded_docs')
+os.makedirs(download_dir, exist_ok=True)
+
+pages = []
 
 # #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>if the fiels dont exist
 # # to download the files
@@ -108,7 +113,7 @@ from pathlib import Path
 # # download_files()
 # #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<if the fiels dont exist
 
-# #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>if the fiels already exist
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>if the fiels already exist
 # def read_file(file):
 #     try:
 #         file_path = os.path.join(download_dir, file)
@@ -127,8 +132,234 @@ from pathlib import Path
 # for file in os.listdir(download_dir):
 #     if os.path.isfile(os.path.join(download_dir, file)):
 #         read_file(file)
-# #<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<if the fiels already exist
+#<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<if the fiels already exist
 
+
+def normalize_arabic_text(text):
+    # تطبيع Unicode وإزالة التشكيل
+    text = unicodedata.normalize("NFKC", text)
+    return ''.join(ch for ch in text if unicodedata.category(ch) != 'Mn')
+
+
+def read_file(file_path):
+    try:
+        with open(file_path, 'r', encoding='utf-8', errors='replace') as f:
+            content = f.read()
+        pages.append({
+            'content': normalize_arabic_text(content),
+            'title': normalize_arabic_text(os.path.basename(file_path))
+        })
+    except Exception as e:
+        print(f"Read error {file_path}: {e}")
+
+# Process all files in directory
+for file in os.listdir(download_dir):
+    file_path = os.path.join(download_dir, file)
+    if os.path.isfile(file_path):
+        read_file(file_path)
+
+print(f"Total files processed: {len(pages)}")
+
+
+
+from datasets import Dataset, DatasetDict
+
+# Create dataset from pages list
+docs_dataset = Dataset.from_list(pages)
+
+# Wrap in DatasetDict
+dataset_dict = DatasetDict({
+    'docs': docs_dataset
+})
+
+# Verify structure
+print(dataset_dict)
+print(f"Number of rows: {dataset_dict['docs'].num_rows}")
+
+
+lemmer = qalsadi.lemmatizer.Lemmatizer()
+
+def text_pree_possising(x):
+  x = re.sub(r'\s\b[أبتثجحخدذرزسشصضطظعغفقكلمنهوي]\.\s', '', x)
+  x = re.sub(r'\s\b[أبتثجحخدذرزسشصضطظعغفقكلمنهوي]\s', '', x)
+  # إزالة الأرقام الترتيبية
+  x = re.sub(r'\s\d+\.\s', ' ', x)
+  # إزالة الرموز والعلامات
+  x = re.sub(r'[^\w\s]', ' ', x)
+  # إزالة التشكيل والمسافات الزائدة
+  x = re.sub(r'[\u064B-\u065F\u0610-\u061A\u06D6-\u06ED]', '', x)
+  x = re.sub(r'\s+', ' ', x).strip()
+  x=x.replace('\n',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('  ',' ').replace('\u200c','').replace('  ','').replace('َ',"").replace('','')
+  x=x.replace('?',' ').replace('!',' ').replace('؟',' ').replace('£',' ').replace('$',' ').replace('%',' ').replace('^',' ').replace('&',' ').replace('*',' ').replace('-',' ').replace('_',' ')
+  x=x.replace('=',' ').replace('+',' ').replace('|',' ').replace('.',' ').replace(',',' ').replace('،',' ')
+  x=x.replace('  ',' ')
+  return x
+
+def text_with_lemmatizer(x):
+  y=text_pree_possising(x)
+  z=lemmas = lemmer.lemmatize_text(y)
+  x=' '.join(z)
+  return x
+
+dataset_docs_and_questions = [{'doc_id':id, 'doc':text_pree_possising(i['content']), 'question':text_pree_possising(i['title'])} for i,id in zip(dataset_dict['docs'],range(0,len(dataset_dict['docs'])))]
+
+dataset_docs_and_questions_with_lemmatizer = [{'doc_id':id, 'doc':text_with_lemmatizer(i['content']), 'question':text_with_lemmatizer(i['title'])} for i,id in zip(dataset_dict['docs'],range(0,len(dataset_dict['docs'])))]
+
+
+
+unique_docs = set()
+filtered_dataset = []
+
+for item in dataset_docs_and_questions:
+    doc_text = item['doc']
+    if doc_text not in unique_docs:
+        unique_docs.add(doc_text)
+        filtered_dataset.append(item)
+
+dataset_docs_and_questions_retrival_evaluation=filtered_dataset
+print(len(dataset_docs_and_questions_retrival_evaluation))
+
+################################################################################
+
+unique_docs_with_lemmatizer = set()
+filtered_dataset_with_lemmatizer = []
+
+for item in dataset_docs_and_questions_with_lemmatizer:
+    doc_text = item['doc']
+    if doc_text not in unique_docs_with_lemmatizer:
+        unique_docs_with_lemmatizer.add(doc_text)
+        filtered_dataset_with_lemmatizer.append(item)
+
+dataset_docs_and_questions_with_lemmatizer_retrival_evaluation=filtered_dataset_with_lemmatizer
+print(len(dataset_docs_and_questions_with_lemmatizer_retrival_evaluation))
+
+
+
+k = 5
+
+class TraditionalRetriever:
+    def __init__(self, docs):
+        self.docs = docs
+        self.vectorizer = TfidfVectorizer()
+        self.tfidf_matrix = self.vectorizer.fit_transform([doc['doc'] for doc in self.docs])
+
+    def invoke(self, query, k):
+        query_vec = self.vectorizer.transform([query])
+        similarity = cosine_similarity(query_vec, self.tfidf_matrix)
+        top_indices = similarity.argsort()[0][-k:][::-1]
+        return [Document(page_content=self.docs[i]['doc'],metadata={'doc_id': self.docs[i]['doc_id']}) for i in top_indices]
+
+class HybridRetriever:
+    def __init__(self, retriever1, retriever2):
+        self.retriever1 = retriever1
+        self.retriever2 = retriever2
+
+    def invoke(self, query, k):
+        results1 = self.retriever1.invoke(query, k=k*2)
+        results2 = self.retriever2.invoke(query, k=k*2)
+
+        # دمج النتائج وإزالة التكرارات
+        combined_docs = {}
+        for doc in results1 + results2:
+            doc_id = doc.metadata['doc_id']
+            if doc_id not in combined_docs:
+                combined_docs[doc_id] = doc
+
+        # ترتيب النتائج حسب الأفضلية
+        sorted_docs = sorted(combined_docs.values(),key=lambda x: self._compute_combined_score(x, results1, results2),reverse=True)
+
+        return sorted_docs[:k]
+
+    def _compute_combined_score(self, doc, results1, results2):
+        # حساب الدرجة المجمعة بناء على المرتبة في كلا النظامين
+        rank1 = next((i for i, d in enumerate(results1) if d.metadata['doc_id'] == doc.metadata['doc_id']), None)
+        rank2 = next((i for i, d in enumerate(results2) if d.metadata['doc_id'] == doc.metadata['doc_id']), None)
+
+        score = 0
+        if rank1 is not None:
+            score += (1 / (rank1 + 1))
+        if rank2 is not None:
+            score += (1 / (rank2 + 1))
+
+        return score
+    
+
+
+dataset = dataset_docs_and_questions_with_lemmatizer
+
+vectorizer = TfidfVectorizer()
+corpus = [doc['doc'] for doc in dataset]
+tfidf_matrix = vectorizer.fit_transform(corpus)
+doc_ids = [doc['doc_id'] for doc in dataset]
+
+
+def traditional_search(query, tfidf_matrix, vectorizer, doc_ids, top_k):
+    query_vec = vectorizer.transform([query])
+    similarity = cosine_similarity(query_vec, tfidf_matrix)
+    top_indices = similarity.argsort()[0][-top_k:][::-1]
+    return [doc_ids[i] for i in top_indices]
+
+
+BM25Retriever = BM25Retriever.from_texts(
+    texts=[doc['doc'] for doc in dataset],
+    ngram_range=(2, 2),
+    k=k,
+    metadatas=[{'doc_id': doc['doc_id']} for doc in dataset]
+)
+
+traditional_retriever = TraditionalRetriever(docs=dataset)
+bm25_retriever = BM25Retriever.from_texts(
+    texts=[doc['doc'] for doc in dataset],
+    metadatas=[{'doc_id': doc['doc_id']} for doc in dataset],
+    ngram_range=(2, 2),
+    k=k
+)
+
+hybrid_retriever = HybridRetriever(retriever1=traditional_retriever, retriever2=bm25_retriever)
+
+
+
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+
+
+
+
+model_path ="ZeyadAhmed/AraElectra-Arabic-SQuADv2-QA"
+
+prep = ArabertPreprocessor("aubmindlab/araelectra-base-discriminator")
+
+model = AutoModelForQuestionAnswering.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+
+qa_pipeline = pipeline("question-answering", model=model, tokenizer=tokenizer)
+
+def question_answering_electra(user_question):
+
+  template = f"""ﺃﻧﺖ ﻣﺴﺘﺸﺎﺭ ﻗﺎﻧﻮﻧﻲ ﺍﻓﺘﺮﺍﺿﻲ. ﺳﺘﺠﻴﺐ ﻋﻠﻰ ﺍﻷﺳﺌﻠﺔ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﺑﻨﺎﺀ ﻋﻠﻰ ﺍﻟﻨﺼﻮﺹ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﺍﻟﻤﻘﺪﻣﺔ.
+
+  ﻭﺳﺘﻘﺪﻡ ﺍﻹﺟﺎﺑﺎﺕ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﺍﻟﺪﻗﻴﻘﺔ ﺑﻨﺎﺀ ﻋﻠﻰ ﺍﻟﻨﺼﻮﺹ ﺍﻟﻤﺘﺎﺣﺔ.
+  ﺑﻌﺾ ﺍﻟﻤﻼﺣﻈﺎﺕ ﺍﻟﺬﻱ ﻳﺠﺐ ﺍﺗﺒﺎﻋﻬﺎ
+  1. ﺍﻻﺟﺎﺑﺔ ﻳﺠﺐ ﺍﻥ ﺗﻜﻮﻥ ﺑﺎﻟﻠﻐﺔ ﺍﻟﻌﺮﺑﻴﺔ
+  2. ﺍﻻﺟﺎﺑﺔ ﻳﺠﺐ ﺍﻥ ﺗﻜﻮﻥ ﻣﻘﺘﺼﺮﺓ ﻋﻠﻰ ﺍﻟﻨﺺ ﺍﻟﻘﺎﻧﻮﻧﻲ ﺍﻟﻤﻘﺪﻡ ﻓﻘﻂ
+  3. ﻳﺠﺐ ﺍﻥ ﺗﻜﻮﻥ ﺍﻻﺟﺎﺑﺔ ﺩﻗﻴﻘﺔ ﻭﻣﺤﺎﻳﺪﺓ
+  4. ﻓﻲ ﺣﺎﻝ ﺍﻧﻚ ﻻ ﺗﻌﺮﻑ ﺍﻻﺟﺎﺑﺔ ﻓﻘﻂ ﺍﺟﺐ ﺑﺎﻧﻚ ﻻ ﺗﻌﺮﻑ ﺍﻟﺠﻮﺍﺏ
+
+  سؤال: {user_question}"""
+
+  docs_ids=[i.metadata['doc_id'] for i in hybrid_retriever.invoke(text_with_lemmatizer(user_question),3)]
+  docs=[dataset_docs_and_questions[i]['doc'] for i in docs_ids]
+  [print(i+'\n') for i in docs]
+  answer = qa_pipeline(
+    context=  prep.preprocess("".join(docs)),
+    question= template
+)
+
+  print('Question:')
+  print(user_question)
+  print("------------------------------------------------")
+  print('answer:')
+  print(answer)
+  
 # text_splitter = RecursiveCharacterTextSplitter(
 #     chunk_size = 80058,#حجم كل جزء (مقطع) بعد التقسيم بالعدد الإجمالي للأحرف.
 #     chunk_overlap  = 6000,#عدد الأحرف المشتركة بين كل جزء والجزء الذي يليه (لضمان عدم فقدان المعلومات عند التجزئة).
