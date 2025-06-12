@@ -353,6 +353,7 @@ def question_answering_electra(user_question):
     context=  prep.preprocess("".join(docs)),
     question= template
 )
+  return answer
 
   print('Question:')
   print(user_question)
@@ -405,15 +406,52 @@ def question_answering_electra(user_question):
 # #     title="".join([page['title'] for page in pages if page['content'] ==context])
 # #     return {'question':user_question,'context':context,'answer':answer,'title':title}
 
-# # def smart_search(request,q):
-# #     try:
-# #         docs_search=[]
-# #         query = str(q).split("%20")
-# #         query=str(query)
-# #         result = question_answering(query)
-# #         return render(request, 'show_as_tree.html',{"docs_search":result})
-# #     except:
-# #         return HttpResponse("لا يوجد نتائج..")
+model_path ="ZeyadAhmed/AraElectra-Arabic-SQuADv2-QA"
+
+prep = ArabertPreprocessor("aubmindlab/araelectra-base-discriminator")
+
+model = AutoModelForQuestionAnswering.from_pretrained(model_path)
+tokenizer = AutoTokenizer.from_pretrained(model_path)
+
+qa_pipeline = pipeline("question-answering", model=model, tokenizer=tokenizer)
+
+def question_answering_electra(user_question):
+
+  template = f"""ﺃﻧﺖ ﻣﺴﺘﺸﺎﺭ ﻗﺎﻧﻮﻧﻲ ﺍﻓﺘﺮﺍﺿﻲ. ﺳﺘﺠﻴﺐ ﻋﻠﻰ ﺍﻷﺳﺌﻠﺔ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﺑﻨﺎﺀ ﻋﻠﻰ ﺍﻟﻨﺼﻮﺹ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﺍﻟﻤﻘﺪﻣﺔ.
+
+  ﻭﺳﺘﻘﺪﻡ ﺍﻹﺟﺎﺑﺎﺕ ﺍﻟﻘﺎﻧﻮﻧﻴﺔ ﺍﻟﺪﻗﻴﻘﺔ ﺑﻨﺎﺀ ﻋﻠﻰ ﺍﻟﻨﺼﻮﺹ ﺍﻟﻤﺘﺎﺣﺔ.
+  ﺑﻌﺾ ﺍﻟﻤﻼﺣﻈﺎﺕ ﺍﻟﺬﻱ ﻳﺠﺐ ﺍﺗﺒﺎﻋﻬﺎ
+  1. ﺍﻻﺟﺎﺑﺔ ﻳﺠﺐ ﺍﻥ ﺗﻜﻮﻥ ﺑﺎﻟﻠﻐﺔ ﺍﻟﻌﺮﺑﻴﺔ
+  2. ﺍﻻﺟﺎﺑﺔ ﻳﺠﺐ ﺍﻥ ﺗﻜﻮﻥ ﻣﻘﺘﺼﺮﺓ ﻋﻠﻰ ﺍﻟﻨﺺ ﺍﻟﻘﺎﻧﻮﻧﻲ ﺍﻟﻤﻘﺪﻡ ﻓﻘﻂ
+  3. ﻳﺠﺐ ﺍﻥ ﺗﻜﻮﻥ ﺍﻻﺟﺎﺑﺔ ﺩﻗﻴﻘﺔ ﻭﻣﺤﺎﻳﺪﺓ
+  4. ﻓﻲ ﺣﺎﻝ ﺍﻧﻚ ﻻ ﺗﻌﺮﻑ ﺍﻻﺟﺎﺑﺔ ﻓﻘﻂ ﺍﺟﺐ ﺑﺎﻧﻚ ﻻ ﺗﻌﺮﻑ ﺍﻟﺠﻮﺍﺏ
+
+  سؤال: {user_question}"""
+
+  docs_ids=[i.metadata['doc_id'] for i in hybrid_retriever.invoke(text_with_lemmatizer(user_question),3)]
+  docs=[dataset_docs_and_questions[i]['doc'] for i in docs_ids]
+  [print(i+'\n') for i in docs]
+  answer = qa_pipeline(
+    context=  prep.preprocess("".join(docs)),
+    question= template
+)
+
+  print('Question:')
+  print(user_question)
+  print("------------------------------------------------")
+  print('answer:')
+  print(answer)
+
+
+def smart_search(request,q):
+    try:
+        docs_search=[]
+        query = str(q).split("%20")
+        query=str(query)
+        result = question_answering_electra(query)
+        return render(request, 'show_as_tree.html',{"docs_search":result})
+    except:
+        return HttpResponse("لا يوجد نتائج..")
 
 
 # def get_all_docs(request):
