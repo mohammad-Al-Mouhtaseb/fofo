@@ -485,8 +485,8 @@
 # #     except:
 # #         return HttpResponse("الملف غير موجود!")
 
-# def constitution(request):
-#         return render(request, 'constitution.html')
+def constitution(request):
+        return render(request, 'constitution.html')
 
 
 # # # ######################################
