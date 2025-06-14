@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,8 +9,8 @@
     <title>مجلس الشعب السوري</title>
     <style>
         :root {
-            --primary-color: #7b181b;
-            --secondary-color: #E3E3E3;
+            --primary-color: #166d2f;
+            --secondary-color: #fff;
             --text-color: #2c3e50;
         }
 
@@ -28,37 +27,41 @@
         }
 
         /* Header Styles */
-        .header {
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.01)),
-            url({% static 'index/files/index_background.png' %}) center/cover;
-            height: 160px;
-            padding: 20px;
+        .header {   
             position: relative;
+            display: flex;
         }
 
         .logo {
             float: right;
-            max-width: 200px;
-            height: auto;
+            width: 130px;
+            margin: 5px;
         }
 
         /* Navigation */
         .main-nav {
             background: var(--primary-color);
             padding: 0.5rem;
+            height: 60px;
+            margin: auto;
+            margin-top: 0;
+            width: 100%;
         }
 
-        .footer-content {
-            /* background: var(--primary-color); */
-            /* padding-bottom: 36px; */
+        .footer-content{
             text-align: center;
             color: #444;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
         }
 
         .nav-list {
             list-style: none;
             display: flex;
             justify-content: space-around;
+            align-items: center;
         }
 
         .nav-item {
@@ -67,11 +70,13 @@
             padding: 0.5rem 1rem;
             transition: all 0.3s;
             text-decoration: none;
+            font-size: large;
         }
 
         /* Search Section */
         .search-section {
-            padding: 1rem;
+            /* padding: 1rem; */
+            margin-top: -50px;
             background: var(--secondary-color);
             text-align: center;
         }
@@ -112,18 +117,32 @@
         }
     </style>
     <script>
-        function search() {
-            x = document.getElementById("search-box").value;
-            window.location.replace("https://parliament.up.railway.app/web/search/" + x);
+        function smart_search_electra(){
+            x=document.getElementById("search-box").value;
+            // window.location.replace("https://parliament.up.railway.app/web/smart_search_electra/"+x);
+            window.location.replace("http://127.0.0.1:8000/web/smart_search_electra/"+x);
+        }
+        function smart_search(){
+            x=document.getElementById("search-box").value;
+            // window.location.replace("https://parliament.up.railway.app/web/smart_search/"+x);
+            window.location.replace("http://127.0.0.1:8000/web/smart_search/"+x);
         }
     </script>
 </head>
-
 <body>
 
-    <header class="header">
-        <img src="{% static 'index/files/syr.png' %}" alt="شعار مجلس الشعب السوري" class="logo" width="135">
-    </header>
+<header class="header">
+    <img src="{% static 'index/files/syr.png' %}" alt="شعار مجلس الشعب السوري" class="logo" >
+    <nav class="main-nav">
+        <ul class="nav-list">
+            <a href="https://parliament.up.railway.app" style="text-decoration: none; color: #fff;"><li class="nav-item">الصفحة الرئيسية</li></a>
+            <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">عن المجلس والأعضاء</li></a>
+            <a href="https://parliament.up.railway.app/web/constitution" style="text-decoration: none; color: #fff;"><li class="nav-item">الدستور السوري</li></a>
+            <a href="https://parliament.up.railway.app/web/get_all" style="text-decoration: none; color: #fff;"><li class="nav-item">القوانين والتشريعات</li></a>
+            <a href="#" style="text-decoration: none; color: #fff;"><li class="nav-item">الترشح والانتخابات</li></a>
+        </ul>
+    </nav>
+</header>
 
     <nav class="main-nav">
         <ul class="nav-list">
