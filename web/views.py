@@ -1,8 +1,8 @@
-# from django.shortcuts import render
-# from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseForbidden
-# import re, requests, html, os
+from django.shortcuts import render
+from django.http import JsonResponse, HttpResponse, FileResponse, HttpResponseForbidden, HttpResponseRedirect
+import re, requests, html, os
 # from pathlib import Path
-# # from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup
 # from urllib.parse import unquote
 
 # from langchain.schema.runnable import RunnableMap
@@ -488,6 +488,18 @@
 def constitution(request):
         return render(request, 'constitution.html')
 
+def smart_search_electra(request,q):
+        url = 'https://0799-35-238-252-57.ngrok-free.app/rag_qa?q='+q
+
+        payload = {}
+        headers = {
+        'ngrok-skip-browser-warning': 'true',
+        'User-Agent': 'MyCustomApp/1.0'
+        }
+
+        response = requests.request("GET", url, headers=headers, data=payload)
+
+        return HttpResponse(response)
 
 # # # ######################################
 
