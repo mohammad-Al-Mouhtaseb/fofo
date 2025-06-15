@@ -8,7 +8,6 @@ urlpatterns = [
     # path('open/<str:file_name>',views.open_file,name='open_file'),
     path('constitution',views.constitution,name='constitution'),
     
-    path('sana',views.sana,name='sana'),
 ]
 
 

@@ -7,6 +7,375 @@
     <link rel="icon" href="{% static 'index/files/syr.png' %}" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="{% static 'index/files/syr.png' %}" sizes="180x180">
     <title>مجلس الشعب السوري</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #1c3327;
+            --secondary-color: #2c4337;
+            --the-color: #1c3327;
+            --dark-bg: #0a1a3a;
+            --light-bg: #1a2a4f;
+            --text-light: #f0f0f0;
+            --text-dark: #333;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        header h1 {
+            color: var(--secondary-color);
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        header p {
+            color: #ddd;
+            font-size: 1.1rem;
+        }
+        
+        .news-container {
+            background: rgba(243, 243, 243, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(85, 85, 85, 0.5);
+            padding: 30px;
+            margin-bottom: 40px;
+            border: 1px solid #444;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--primary-color);
+        }
+        
+        .section-title i {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+            margin-left: 15px;
+        }
+        
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: var(--the-color);
+        }
+        
+        .breaking-news-container {
+            background: rgba(186, 185, 185, 0.3);
+            border-radius: 10px;
+            /* padding: 20px; */
+            margin-bottom: 30px;
+            border: 1px solid var(--primary-color);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .breaking-news-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(92, 92, 92, 0.1), transparent);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .breaking-news {
+            display: flex;
+            align-items: center;
+            /* padding: 15px;    */
+            border-radius: 8px;
+        }
+        
+        .breaking-news-title {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            background: rgba(139, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 30px;
+            white-space: nowrap;
+            min-width: 200px;
+            text-align: center;
+            justify-content: center;
+        }
+        
+        .breaking-news-title i {
+            margin-left: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .ticker-container {
+            flex-grow: 1;
+            overflow: hidden;
+            height: 40px;
+            position: relative;
+            margin: 0 20px;
+        }
+        
+        .ticker {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            left: 0;
+            list-style: none;
+            transition: transform 0.5s ease;
+        }
+        
+        .ticker li {
+            /* padding: 8px 0; */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .ticker a {
+            color: #000;
+            text-decoration: none;
+            font-size: 1.2rem;
+            height: 40px;
+            transition: all 0.3s;
+            display: block;
+        }
+        
+        .ticker a:hover {
+            color: var(--secondary-color);
+            text-decoration: underline;
+        }
+        
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 5px solid var(--secondary-color);
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+        
+        .update-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+            color: #4e4e4e;
+        }
+        
+        .btn {
+            background: linear-gradient(to right, var(--primary-color), #b30000);
+            color: var(--text-light);
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .btn:hover {
+            background: linear-gradient(to right, #b30000, var(--primary-color));
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .btn i {
+            color: var(--secondary-color);
+        }
+        
+        .last-update {
+            font-size: 0.95rem;
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #4caf50;
+        }
+        
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .news-card {
+            background: rgba(218, 218, 218, 0.5);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            border: 1px solid #444;
+        }
+        
+        .news-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            border-color: var(--secondary-color);
+        }
+        
+        .news-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .news-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(139, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .news-content {
+            padding: 20px;
+        }
+        
+        .news-content h3 {
+            color: var(--the-color);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            min-height: 60px;
+        }
+        
+        .news-content p {
+            color: #3f3f3f;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .news-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #aaa;
+            font-size: 0.85rem;
+            border-top: 1px solid #444;
+            padding-top: 15px;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .agency-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .agency-logo i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+        }
+        
+        .agency-logo h3 {
+            font-size: 1.8rem;
+            color: var(--secondary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .breaking-news {
+                flex-direction: column;
+            }
+            
+            .breaking-news-title {
+                margin-bottom: 15px;
+                width: 100%;
+            }
+            
+            .ticker-container {
+                width: 100%;
+                margin: 0;
+            }
+            
+            .update-info {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .status-indicator {
+                justify-content: center;
+            }
+            
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
     <style>
         :root {
             --primary-color: #2c4437;
@@ -119,6 +488,7 @@
             }
         }
     </style>
+
     <script>
         function smart_search_electra(){
             x=document.getElementById("search-box").value;
@@ -147,15 +517,242 @@
     </nav>
 </header>
 
-
-
 <section class="search-section">
     <h2>بحث سريع في القوانين والتشريعات</h2>
     <input type="text" id="search-box" class="search-input  " placeholder="أدخل كلمة مفتاحية..." style="margin-right: 36px;width: 35%; min-width: 200;">
     <button class="search-btn" onclick="smart_search_electra()" style="height: 36px;width: 36px;border: 2px solid #166d2f  ; border-radius: 20%;">بحث</button>
 </section>
 
-<iframe src="https://parliament.up.railway.app/web/sana" frameborder="0" width="100%"></iframe>
+
+<br>
+    <div class="container">
+        
+        <div class="news-container">
+            <div class="section-title">
+                <i class="fas fa-bolt"></i>
+                <h2>الشريط الإخباري العاجل</h2>
+            </div>
+            
+            <div class="breaking-news-container">
+                <div class="breaking-news">
+                    
+                    <div class="ticker-container">
+                        <ul class="ticker" id="news-ticker">
+                            <!-- سيتم ملؤه ديناميكيًا -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="loading-container" id="loading">
+                <div class="loading-spinner"></div>
+                <p class="loading-text"></p>
+            </div>
+            
+            <div class="update-info">
+                <div class="status-indicator">
+                    <div class="status-dot" id="status-dot"></div>
+                    <span id="status-text"></span>
+                </div>
+                
+                <div class="last-update">
+                 <span id="last-update"></span>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="news-container">
+            <div class="section-title">
+                <i class="fas fa-globe-asia"></i>
+                <h2>أهم الأخبار</h2>
+            </div>
+            
+            <div class="news-grid" id="news-grid">
+                <!-- سيتم ملؤه ديناميكيًا -->
+            </div>
+    </div>
+    
+    <script>
+        // عناصر DOM
+        const newsTicker = document.getElementById('news-ticker');
+        const newsGrid = document.getElementById('news-grid');
+        const lastUpdate = document.getElementById('last-update');
+        const refreshBtn = document.getElementById('refresh-btn');
+        const loadingContainer = document.getElementById('loading');
+        const statusText = document.getElementById('status-text');
+        const statusDot = document.getElementById('status-dot');
+        
+        const newsData = [
+            {
+                title: "الخطوط السورية: تأمين ركاب رحلة الشارقة دمشق بعد هبوطها أمس في مطار تبوك بالسعودية نتيجة التوترات بالمنطقة",
+                link: "https://sana.sy/?p=2232039",
+                time: "منذ 15 دقيقة",
+                category: "أخبار عاجلة"
+            },
+            {
+                title: "رئيس مجلس الوزراء يلتقي وفداً من المستثمرين العرب لبحث سبل تطوير التعاون الاقتصادي",
+                link: "#",
+                time: "منذ 32 دقيقة",
+                category: "الاقتصاد"
+            },
+            {
+                title: "وزارة التربية تعلن عن نتائج امتحانات الشهادة الثانوية بنسبة نجاح تتجاوز 80%",
+                link: "#",
+                time: "منذ ساعة",
+                category: "التعليم"
+            },
+            {
+                title: "انطلاق فعاليات مهرجان دمشق السينمائي الدولي بدورته الـ 28 بمشاركة أفلام من 40 دولة",
+                link: "#",
+                time: "منذ ساعتين",
+                category: "الثقافة"
+            },
+            {
+                title: "فريق البحث العلمي السوري يحصد جائزة عالمية في مجال الطاقة المتجددة",
+                link: "#",
+                time: "منذ 3 ساعات",
+                category: "العلوم"
+            },
+            {
+                title: "وزارة الداخلية تعلن عن إجراءات أمنية مشددة خلال العيد الوطني",
+                link: "#",
+                time: "منذ 4 ساعات",
+                category: "الأمن"
+            },
+            {
+                title: "سورية توقع اتفاقية تجارية جديدة مع إيران لتعزيز التبادل التجاري بين البلدين",
+                link: "#",
+                time: "منذ 5 ساعات",
+                category: "الاقتصاد"
+            },
+            {
+                title: "انخفاض درجات الحرارة في الأيام المقبلة مع توقعات بأمطار خفيفة على الساحل",
+                link: "#",
+                time: "منذ 6 ساعات",
+                category: "الطقس"
+            }
+        ];
+        
+        // دالة لتحديث وقت التحديث
+        function updateTime() {
+            const now = new Date();
+            const timeString = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+            lastUpdate.textContent = timeString;
+        }
+        
+        // دالة لتحديث حالة الاتصال
+        function updateStatus(status, message) {
+            statusText.textContent = message;
+            
+            if (status === 'success') {
+                statusDot.style.backgroundColor = '#4caf50';
+            } else if (status === 'loading') {
+                statusDot.style.backgroundColor = '#ffc107';
+            } else {
+                statusDot.style.backgroundColor = '#f44336';
+            }
+        }
+        
+        function fetchNews() {
+            // بدء التحميل
+            loadingContainer.style.display = 'flex';
+            updateStatus('loading', 'جاري جلب آخر الأخبار...');
+            
+            // محاكاة اتصال بالخادم
+            setTimeout(() => {
+                try {
+                    // تحديث الشريط الإخباري
+                    updateNewsTicker();
+                    
+                    // تحديث أهم الأخبار
+                    updateFeaturedNews();
+                    
+                    // تحديث الوقت والحالة
+                    updateTime();
+                    updateStatus('success', 'اتصال ناجح - بيانات حديثة');
+                    
+                    // إخفاء مؤشر التحميل
+                    loadingContainer.style.display = 'none';
+                    
+                } catch (error) {
+                    console.error('حدث خطأ أثناء جلب الأخبار:', error);
+                    updateStatus('error', 'خطأ في جلب الأخبار. يرجى المحاولة لاحقًا');
+                    
+                    // عرض رسالة خطأ في الشريط
+                    newsTicker.innerHTML = '<li>عذرًا، تعذر جلب الأخبار في الوقت الحالي. يرجى تحديث الصفحة لاحقًا.</li>';
+                    
+                    // إخفاء مؤشر التحميل
+                    loadingContainer.style.display = 'none';
+                }
+            }, 2000); // محاكاة زمن اتصال 2 ثانية
+        }
+        
+        // دالة لتحديث الشريط الإخباري
+        function updateNewsTicker() {
+            // مسح المحتوى الحالي
+            newsTicker.innerHTML = '';
+            
+            // إضافة الأخبار الجديدة
+            newsData.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${item.link}" target="_blank">${item.title}</a>`;
+                newsTicker.appendChild(li);
+            });
+            
+            // بدء حركة الشريط
+            startTickerAnimation();
+        }
+        
+        // دالة لتحديث أهم الأخبار
+        function updateFeaturedNews() {
+            // مسح المحتوى الحالي
+            newsGrid.innerHTML = '';
+            
+            // إضافة الأخبار الجديدة
+            newsData.forEach(news => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'news-card';
+                newsCard.innerHTML = `
+                    
+                    <div class="news-content">
+                        <h3>${news.title}</h3>
+                        <p>هذا نص وصفي للخبر، يمكن أن يحتوي على ملخص مختصر حول الموضوع الذي يتحدث عنه الخبر الرئيسي.</p>
+                        <div class="news-meta">
+                            <a href="${news.link}" target="_blank">قراءة المزيد</a>
+                            <span><i class="far fa-clock"></i> ${news.time}</span>
+                        </div>
+                    </div>
+                `;
+                newsGrid.appendChild(newsCard);
+            });
+        }
+        
+        // دالة لتشغيل حركة الشريط الإخباري
+        function startTickerAnimation() {
+            let position = 0;
+            const tickerHeight = 40; // ارتفاع كل عنصر
+            const itemCount = newsData.length;
+            
+            setInterval(() => {
+                position = (position + 1) % itemCount;
+                newsTicker.style.transform = `translateY(-40px)`;
+            }, 5000); // تغيير الخبر كل 5 ثوان
+        }
+        
+        // تهيئة الصفحة عند التحميل
+        document.addEventListener('DOMContentLoaded', () => {
+            // جلب الأخبار لأول مرة
+            fetchNews();
+            
+            // تحديث الوقت كل ثانية
+            setInterval(updateTime, 1000);
+        });
+        
+        // تحديث الأخبار عند النقر على الزر
+        refreshBtn.addEventListener('click', fetchNews);
+    </script>
+
 
 <footer>
     <div class="footer-content">

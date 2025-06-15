@@ -501,8 +501,6 @@ def smart_search_electra(request,q):
 
         return HttpResponse(response)
 
-def sana(request):
-    return render(request,'sana.html')
 
 # # # ######################################
 
