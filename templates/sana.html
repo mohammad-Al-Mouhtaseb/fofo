@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>وكالة سانا الإخبارية - الشريط الإخباري المباشر</title>
+    <title></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --primary-color: #8b0000;
-            --secondary-color: #ffd700;
+            --primary-color: #1c3327;
+            --secondary-color: #2c4337;
             --dark-bg: #0a1a3a;
             --light-bg: #1a2a4f;
             --text-light: #f0f0f0;
@@ -23,8 +23,6 @@
         }
         
         body {
-            background: linear-gradient(135deg, var(--dark-bg), var(--light-bg));
-            color: var(--text-light);
             line-height: 1.6;
             padding: 20px;
             min-height: 100vh;
@@ -55,9 +53,9 @@
         }
         
         .news-container {
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(243, 243, 243, 0.7);
             border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 10px 30px rgba(85, 85, 85, 0.5);
             padding: 30px;
             margin-bottom: 40px;
             border: 1px solid #444;
@@ -83,7 +81,7 @@
         }
         
         .breaking-news-container {
-            background: rgba(139, 0, 0, 0.3);
+            background: rgba(186, 185, 185, 0.3);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
@@ -99,7 +97,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(92, 92, 92, 0.1), transparent);
             animation: shine 3s infinite;
         }
         
@@ -112,7 +110,6 @@
             display: flex;
             align-items: center;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.6);
             border-radius: 8px;
         }
         
@@ -161,7 +158,7 @@
         }
         
         .ticker a {
-            color: var(--text-light);
+            color: var(--secondary-color);
             text-decoration: none;
             font-size: 1.2rem;
             transition: all 0.3s;
@@ -209,7 +206,7 @@
             margin-top: 25px;
             padding-top: 15px;
             border-top: 1px solid #444;
-            color: #aaa;
+            color: #4e4e4e;
         }
         
         .btn {
@@ -262,7 +259,7 @@
         }
         
         .news-card {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(218, 218, 218, 0.5);
             border-radius: 10px;
             overflow: hidden;
             transition: all 0.3s;
@@ -305,7 +302,7 @@
         }
         
         .news-content p {
-            color: #ddd;
+            color: #3f3f3f;
             margin-bottom: 15px;
             font-size: 0.95rem;
         }
@@ -379,10 +376,6 @@
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1><i class="fas fa-newspaper"></i> وكالة سانا الإخبارية</h1>
-            <p>الشريط الإخباري المباشر - تحديثات فورية على مدار الساعة</p>
-        </header>
         
         <div class="news-container">
             <div class="section-title">
@@ -392,10 +385,6 @@
             
             <div class="breaking-news-container">
                 <div class="breaking-news">
-                    <div class="breaking-news-title">
-                        <i class="fa fa-bolt"></i>
-                        <span>أخبار عاجلة</span>
-                    </div>
                     
                     <div class="ticker-container">
                         <ul class="ticker" id="news-ticker">
@@ -407,22 +396,19 @@
             
             <div class="loading-container" id="loading">
                 <div class="loading-spinner"></div>
-                <p class="loading-text">جاري جلب آخر الأخبار من وكالة سانا...</p>
+                <p class="loading-text"></p>
             </div>
             
             <div class="update-info">
                 <div class="status-indicator">
                     <div class="status-dot" id="status-dot"></div>
-                    <span id="status-text">جاري الاتصال بوكالة سانا</span>
+                    <span id="status-text"></span>
                 </div>
                 
                 <div class="last-update">
-                    آخر تحديث: <span id="last-update">--:--:--</span>
+                 <span id="last-update"></span>
                 </div>
                 
-                <button class="btn" id="refresh-btn">
-                    <i class="fas fa-sync-alt"></i> تحديث الأخبار
-                </button>
             </div>
         </div>
         
@@ -435,16 +421,6 @@
             <div class="news-grid" id="news-grid">
                 <!-- سيتم ملؤه ديناميكيًا -->
             </div>
-        </div>
-        
-        <footer>
-            <div class="agency-logo">
-                <i class="fas fa-newspaper"></i>
-                <h3>وكالة الأنباء السورية - سانا</h3>
-            </div>
-            <p>جميع الأخبار مأخوذة مباشرة من الموقع الرسمي لوكالة سانا الإخبارية</p>
-            <p>تم التطوير بواسطة: فريق الدعم الفني - © 2023</p>
-        </footer>
     </div>
     
     <script>
@@ -457,7 +433,6 @@
         const statusText = document.getElementById('status-text');
         const statusDot = document.getElementById('status-dot');
         
-        // بيانات الأخبار (سيتم تحديثها من موقع سانا)
         const newsData = [
             {
                 title: "الخطوط السورية: تأمين ركاب رحلة الشارقة دمشق بعد هبوطها أمس في مطار تبوك بالسعودية نتيجة التوترات بالمنطقة",
@@ -529,7 +504,6 @@
             }
         }
         
-        // دالة لمحاكاة جلب الأخبار من موقع سانا
         function fetchNews() {
             // بدء التحميل
             loadingContainer.style.display = 'flex';
@@ -590,9 +564,7 @@
                 const newsCard = document.createElement('div');
                 newsCard.className = 'news-card';
                 newsCard.innerHTML = `
-                    <div class="news-image" style="background-image: url('https://source.unsplash.com/random/600x400?syria,${Math.floor(Math.random() * 1000)}')">
-                        <div class="news-overlay">${news.category}</div>
-                    </div>
+                    
                     <div class="news-content">
                         <h3>${news.title}</h3>
                         <p>هذا نص وصفي للخبر، يمكن أن يحتوي على ملخص مختصر حول الموضوع الذي يتحدث عنه الخبر الرئيسي.</p>
