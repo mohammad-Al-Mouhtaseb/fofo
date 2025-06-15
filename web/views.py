@@ -501,6 +501,9 @@ def smart_search_electra(request,q):
 
         return HttpResponse(response)
 
+def sana(request):
+    return render(request,'https://parliament.up.railway.app/web/sana')
+
 # # # ######################################
 
 # # # REJECTED_CHARS_REGEX = r"[^0-9\u0621-\u063A\u0640-\u066C\u0671-\u0674a-zA-Z\[\]!\"#\$%\'\(\)\*\+,\.:;\-<=·>?@\[\\\]\^_ـ`{\|}~—٪’،؟`୍“؛”ۚ»؛\s+«–…‘]"
